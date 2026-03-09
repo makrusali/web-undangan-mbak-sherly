@@ -57,7 +57,7 @@ class InvitationSettingController extends Controller
             'couple_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
 
             // Song/Audio
-            'song_file' => 'nullable|mimes:mp3,wav,m4a,ogg|max:10240',
+            'song_file' => 'nullable|max:10240',
             'song_title' => 'nullable|string|max:255',
             'song_artist' => 'nullable|string|max:255',
             'song_autoplay' => 'nullable|boolean',
