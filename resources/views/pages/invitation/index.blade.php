@@ -6,6 +6,29 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $setting->couple_name ?? 'Wedding Invitation' }} - Pernikahan {{ $setting->couple_name }}</title>
 
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:title" content="{{ $setting->couple_name ?? 'Wedding Invitation' }} - Pernikahan {{ $setting->couple_name }}" />
+    <meta property="og:description" content="Undangan Pernikahan {{ $setting->couple_name }}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="{{ url()->current() }}" />
+    @if($setting && $setting->couple_photo)
+    <meta property="og:image" content="{{ $setting->couple_photo_url }}" />
+    @elseif($setting && $setting->hero_image)
+    <meta property="og:image" content="{{ $setting->hero_image_url }}" />
+    @endif
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{{ $setting->couple_name ?? 'Wedding Invitation' }}" />
+    <meta name="twitter:description" content="Undangan Pernikahan {{ $setting->couple_name }}" />
+    @if($setting && $setting->couple_photo)
+    <meta name="twitter:image" content="{{ $setting->couple_photo_url }}" />
+    @elseif($setting && $setting->hero_image)
+    <meta name="twitter:image" content="{{ $setting->hero_image_url }}" />
+    @endif
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -107,7 +130,7 @@
             width: 100%;
             height: 100%;
             background: var(--blue-gradient);
-            z-index: 10000;
+            z-index: 15000; /* Lower than loading overlay (20000) */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -621,17 +644,186 @@
             transform: scale(1.02);
             box-shadow: 0 25px 35px -10px rgba(37, 99, 235, 0.3);
         }
+
+        /* Loading Animation */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--blue-gradient);
+            z-index: 20000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1s ease, visibility 1s ease;
+        }
+
+        .loading-overlay.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loading-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            color: white;
+            max-width: 90%;
+        }
+
+        .loading-heart {
+            margin-bottom: 2rem;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .loading-text {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        .loading-bar-container {
+            width: 250px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 0 auto 1rem;
+        }
+
+        .loading-bar {
+            width: 0%;
+            height: 100%;
+            background: white;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        .loading-percentage {
+            font-size: 1rem;
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
     </style>
+
+    <script>
+        // Loading animation
+        $(document).ready(function() {
+            // Simulate loading progress
+            let progress = 0;
+            const loadingBar = document.getElementById('loadingBar');
+            const loadingPercentage = document.getElementById('loadingPercentage');
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            
+            const interval = setInterval(function() {
+                progress += Math.random() * 15;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    
+                    // Hide loading overlay and show opening overlay after a short delay
+                    setTimeout(function() {
+                        loadingOverlay.classList.add('hidden');
+                    }, 500);
+                }
+                
+                if (loadingBar) {
+                    loadingBar.style.width = progress + '%';
+                }
+                if (loadingPercentage) {
+                    loadingPercentage.textContent = Math.round(progress) + '%';
+                }
+            }, 200);
+            
+            // Preload all images
+            const images = [];
+            
+            @if($setting && $setting->hero_image)
+                images.push('{{ $setting->hero_image_url }}');
+            @endif
+            
+            @if($setting && $setting->groom_photo)
+                images.push('{{ $setting->groom_photo_url }}');
+            @endif
+            
+            @if($setting && $setting->bride_photo)
+                images.push('{{ $setting->bride_photo_url }}');
+            @endif
+            
+            @if($setting && $setting->couple_photo)
+                images.push('{{ $setting->couple_photo_url }}');
+            @endif
+            
+            @foreach($events ?? [] as $event)
+                @if($event->image)
+                    images.push('{{ $event->image_url }}');
+                @endif
+            @endforeach
+            
+            @foreach($galleries ?? [] as $gallery)
+                images.push('{{ $gallery->image_url }}');
+            @endforeach
+            
+            // Preload images
+            if (images.length > 0) {
+                images.forEach(src => {
+                    const img = new Image();
+                    img.src = src;
+                });
+            }
+        });
+    </script>
 </head>
 <body class="overflow-x-hidden">
-    <!-- Beautiful Opening Animation - No Scale -->
+    <!-- Loading Animation -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <!-- Animated Heart -->
+            <div class="loading-heart">
+                <svg width="100" height="100" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" 
+                        fill="white" fill-opacity="0.9" stroke="white" stroke-width="1">
+                        <animate attributeName="d" 
+                            dur="1.5s" 
+                            values="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z;
+                                M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z;
+                                M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                            repeatCount="indefinite" />
+                    </path>
+                </svg>
+            </div>
+            
+            <!-- Loading Bar -->
+            <div class="loading-bar-container">
+                <div class="loading-bar" id="loadingBar"></div>
+            </div>
+            
+            <div class="loading-percentage" id="loadingPercentage">0%</div>
+        </div>
+    </div>
+
+    <!-- Beautiful Opening Animation -->
     <div class="opening-overlay" id="openingOverlay">
         <div class="opening-content">
             <!-- Animated Flower SVG -->
             <div class="opening-flower">
                 <svg width="80" height="80" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 2C12 2 12 5 9 8C6 11 2 12 2 12C2 12 6 13 9 16C12 19 12 22 12 22C12 22 12 19 15 16C18 13 22 12 22 12C22 12 18 11 15 8C12 5 12 2 12 2Z" 
-                          fill="white" fill-opacity="0.3" stroke="white" stroke-width="1"/>
+                        fill="white" fill-opacity="0.3" stroke="white" stroke-width="1"/>
                     <circle cx="12" cy="12" r="3" fill="white" fill-opacity="0.8"/>
                 </svg>
             </div>
@@ -650,6 +842,8 @@
             </button>
         </div>
     </div>
+
+
 
     <!-- Main Content -->
     <div class="main-content" id="mainContent">
