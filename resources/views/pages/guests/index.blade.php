@@ -213,7 +213,7 @@
                 </p>
                 @if(!request('search'))
                     <a 
-                        href="{{ route('guests.create') }}" 
+                        href="{{ route('panel.guests.create') }}" 
                         class="inline-flex items-center justify-center gap-2 mt-4 rounded-lg bg-brand-500 px-4 py-2.5 text-sm font-medium text-white hover:bg-brand-600 transition-colors"
                     >
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
