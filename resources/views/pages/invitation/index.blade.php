@@ -30,6 +30,7 @@
     @endif
 
     <!-- Fonts -->
+    <link rel="icon" type="image/x-icon" href="/images/favicon-32x32.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1378,7 +1379,7 @@
 
             // Create floating petals
             function createFloatingPetals() {
-                for (let i = 0; i < 30; i++) {
+                for (let i = 0; i < 20; i++) {
                     setTimeout(() => {
                         const petal = document.createElement('div');
                         petal.className = 'floating-petal';
