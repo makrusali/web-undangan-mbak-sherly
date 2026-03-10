@@ -66,7 +66,13 @@ class InvitationSetting extends Model
 
     public function getSongFileUrlAttribute()
     {
-        return $this->song_file ? Storage::url($this->song_file) : null;
+        if (!$this->song_file) return null;
+
+        // Extract just the filename from the path
+        $filename = basename($this->song_file);
+
+        // Use custom route instead of direct storage link
+        return route('audio.serve', ['filename' => $filename]);
     }
 
     public function getSongFileSizeAttribute()

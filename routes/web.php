@@ -55,3 +55,22 @@ Route::middleware(AuthMiddleware::class)->prefix("panel")->name('panel.')->group
     Route::delete('invitation-settings/delete-couple', [InvitationSettingController::class, 'deleteCouplePhoto'])->name('invitation-settings.delete-couple');
     Route::delete('invitation-settings/delete-song', [InvitationSettingController::class, 'deleteSongFile'])->name('invitation-settings.delete-song');
 });
+
+
+Route::get('/audio/{filename}', function ($filename) {
+    $path = storage_path('app/public/invitations/songs/' . $filename);
+
+    if (!file_exists($path)) {
+        abort(404);
+    }
+
+    $mime = mime_content_type($path);
+
+    return response()->file($path, [
+        'Content-Type' => $mime,
+        'Content-Length' => filesize($path),
+        'Accept-Ranges' => 'bytes',
+        'Cache-Control' => 'public, max-age=86400',
+        'Access-Control-Allow-Origin' => '*',
+    ]);
+})->where('filename', '.*\.(mp3|m4a|ogg|wav)$')->name('audio.serve');
