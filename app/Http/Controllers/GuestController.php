@@ -183,6 +183,11 @@ class GuestController extends Controller
         return view('pages.guests.create', compact('maxGuest'));
     }
 
+    public function show(Guest $guest)
+    {
+        return view('pages.guests.show', compact('guest'));
+    }
+
     /**
      * Store a newly created guest in storage.
      */
