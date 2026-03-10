@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Excel\GuestsImport;
+use App\Excel\GuestsTemplateExport;
 use App\Models\Guest;
 use App\Models\InvitationSetting;
 use App\Models\WeddingEvent;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 
 class GuestController extends Controller
 {
@@ -259,5 +262,46 @@ class GuestController extends Controller
 
         return redirect()->route('panel.guests.index')
             ->with('success', 'Guest deleted successfully.');
+    }
+
+
+    public function downloadTemplate()
+    {
+        $headers = [
+            'name',
+            'phone',
+            'address',
+        ];
+
+        $sampleData = [];
+
+        return Excel::download(new GuestsTemplateExport($headers, $sampleData), 'guests-template.xlsx');
+    }
+
+    /**
+     * Import guests from Excel file.
+     */
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,xls,csv|max:2048',
+        ]);
+
+        try {
+            $import = new GuestsImport(
+                $request->has('skip_duplicates'),
+                $request->has('update_existing')
+            );
+
+            Excel::import($import, $request->file('file'));
+
+            $stats = $import->getStats();
+
+            return redirect()->route('panel.guests.index')
+                ->with('success', "Import completed: {$stats['created']} created, {$stats['updated']} updated, {$stats['skipped']} skipped.");
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->with('error', 'Import failed: ' . $e->getMessage());
+        }
     }
 }

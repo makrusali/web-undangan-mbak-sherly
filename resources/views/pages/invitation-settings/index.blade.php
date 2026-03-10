@@ -75,7 +75,7 @@
                         <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                             Invitation Text
                         </label>
-                        <p class="text-xs text-gray-500 mb-2">Use <span class="bg-gray-100 px-1 rounded">@{{guest}}</span> as placeholder for guest name</p>
+                        <p class="text-xs text-gray-500 mb-2">Use <span class="bg-gray-100 px-1 rounded">@{{guest}}</span> and <span class="bg-gray-100 px-1 rounded">@{{max_guest}}</span> as placeholders</p>
                         <input type="hidden" name="invitation_text" id="invitation_text_input" value="{{ $setting->invitation_text ?? '' }}">
                         <div id="invitation_text_editor" class="quill-editor mb-4" style="height: 200px;">{!! $setting->invitation_text ?? '' !!}</div>
                     </div>
@@ -85,8 +85,7 @@
                         <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                             WhatsApp Message Template
                         </label>
-                        <p class="text-xs text-gray-500 mb-2">Use <span class="bg-gray-100 px-1 rounded">@{{guest}}</span> for guest name and <span class="bg-gray-100 px-1 rounded">@{{event_details}}</span> for event details</p>
-                        <p class="text-xs text-amber-600 mb-2">⚠️ Note: Line breaks will be preserved in the actual message</p>
+                        <p class="text-xs text-gray-500 mb-2">Use <span class="bg-gray-100 px-1 rounded">@{{guest}}</span>, <span class="bg-gray-100 px-1 rounded">@{{invitation_url}}</span>, and <span class="bg-gray-100 px-1 rounded">@{{event_details}}</span> as placeholders</p>
                         <input type="hidden" name="message_template" id="message_template_input" value="{{ $setting->message_template ?? '' }}">
                         <div id="message_template_editor" class="quill-editor mb-4" style="height: 200px;">{!! $setting->message_template ?? '' !!}</div>
                     </div>
@@ -116,6 +115,7 @@
             <div class="mb-8">
                 <h4 class="text-md font-semibold text-gray-800 dark:text-white/90 mb-4">Groom Information</h4>
                 <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    <!-- Nickname -->
                     <div>
                         <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                             Nickname
@@ -129,6 +129,7 @@
                         />
                     </div>
 
+                    <!-- Full Name -->
                     <div>
                         <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                             Full Name
@@ -142,19 +143,17 @@
                         />
                     </div>
 
-                    <div>
+                    <!-- Parents with Quill -->
+                    <div class="md:col-span-2">
                         <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                             Parents
                         </label>
-                        <input 
-                            type="text" 
-                            name="groom_parents"
-                            value="{{ $setting->groom_parents ?? '' }}"
-                            placeholder="e.g., Bpk. Ahmad & Ibu Siti"
-                            class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white-30"
-                        />
+                        <p class="text-xs text-gray-500 mb-2">Format nama orang tua dengan gaya yang diinginkan</p>
+                        <input type="hidden" name="groom_parents" id="groom_parents_input" value="{{ $setting->groom_parents ?? '' }}">
+                        <div id="groom_parents_editor" class="quill-editor mb-4" style="height: 120px;">{!! $setting->groom_parents ?? '' !!}</div>
                     </div>
 
+                    <!-- Instagram -->
                     <div>
                         <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                             Instagram (optional)
@@ -168,6 +167,7 @@
                         />
                     </div>
 
+                    <!-- Photo -->
                     <div class="md:col-span-2">
                         <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                             Photo
@@ -196,6 +196,7 @@
             <div class="mb-8">
                 <h4 class="text-md font-semibold text-gray-800 dark:text-white/90 mb-4">Bride Information</h4>
                 <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    <!-- Nickname -->
                     <div>
                         <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                             Nickname
@@ -209,6 +210,7 @@
                         />
                     </div>
 
+                    <!-- Full Name -->
                     <div>
                         <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                             Full Name
@@ -222,19 +224,17 @@
                         />
                     </div>
 
-                    <div>
+                    <!-- Parents with Quill -->
+                    <div class="md:col-span-2">
                         <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                             Parents
                         </label>
-                        <input 
-                            type="text" 
-                            name="bride_parents"
-                            value="{{ $setting->bride_parents ?? '' }}"
-                            placeholder="e.g., Bpk. Bambang & Ibu Ratna"
-                            class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white-30"
-                        />
+                        <p class="text-xs text-gray-500 mb-2">Format nama orang tua dengan gaya yang diinginkan</p>
+                        <input type="hidden" name="bride_parents" id="bride_parents_input" value="{{ $setting->bride_parents ?? '' }}">
+                        <div id="bride_parents_editor" class="quill-editor mb-4" style="height: 120px;">{!! $setting->bride_parents ?? '' !!}</div>
                     </div>
 
+                    <!-- Instagram -->
                     <div>
                         <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                             Instagram (optional)
@@ -248,6 +248,7 @@
                         />
                     </div>
 
+                    <!-- Photo -->
                     <div class="md:col-span-2">
                         <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                             Photo
@@ -310,6 +311,7 @@
                         />
                     </div>
 
+                    <!-- Thanks Message with Quill -->
                     <div>
                         <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                             Thank You Message
@@ -469,6 +471,7 @@
     .quill-editor {
         border-radius: 0.5rem;
         background: white;
+        margin-bottom: 1rem;
     }
     .ql-toolbar {
         border-top-left-radius: 0.5rem;
@@ -513,17 +516,20 @@
         // Initialize Quill editors
         const editors = {};
         
-        // Editor configurations
+        // Editor configurations - now includes all text fields
         const editorConfigs = [
             { id: 'invitation_text_editor', inputId: 'invitation_text_input' },
             { id: 'message_template_editor', inputId: 'message_template_input' },
             { id: 'love_story_editor', inputId: 'love_story_input' },
-            { id: 'thanks_message_editor', inputId: 'thanks_message_input' }
+            { id: 'thanks_message_editor', inputId: 'thanks_message_input' },
+            { id: 'groom_parents_editor', inputId: 'groom_parents_input' },
+            { id: 'bride_parents_editor', inputId: 'bride_parents_input' }
         ];
 
-        // Common toolbar options
+        // Common toolbar options with more formatting options
         const toolbarOptions = [
             ['bold', 'italic', 'underline', 'strike'],
+            [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
             [{ 'list': 'ordered'}, { 'list': 'bullet' }],
             [{ 'align': [] }],
             ['link'],
