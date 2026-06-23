@@ -532,8 +532,6 @@
             justify-content: center;
             border-radius: 24px;
             box-shadow: 0 20px 45px rgba(var(--dark-rgb), 0.25);
-            border: 3.5px solid var(--accent-color);
-            outline: 1.5px solid var(--primary-color);
             overflow: hidden;
             transition: transform 0.6s ease, box-shadow 0.6s ease;
             margin: 0 auto;
@@ -594,109 +592,119 @@
         </div>
     </div>
 
-    <!-- Opening Animation Overlay -->
-    <div class="opening-overlay" id="openingOverlay">
-        <!-- Animated SVG elegant gold lineart corner branches representing wind breeze -->
-        <div class="absolute top-0 left-0 w-36 md:w-56 lg:w-72 opacity-85 select-none pointer-events-none z-20 animate-sway-slow origin-top-left text-(--accent-color)">
-            <svg viewBox="0 0 100 100" class="w-full h-full" fill="none" stroke="currentColor" stroke-width="1.2">
-                <path d="M0,0 Q30,10 50,50 T90,100" stroke-linecap="round" class="svg-stem" />
-                <path d="M15,10 Q5,25 0,35 Z" fill="currentColor" fill-opacity="0.15" />
-                <path d="M25,12 Q35,5 45,0 Z" fill="currentColor" fill-opacity="0.15" />
-                <path d="M30,22 Q15,35 10,48 Z" fill="currentColor" fill-opacity="0.15" />
-                <path d="M42,28 Q55,20 62,10 Z" fill="currentColor" fill-opacity="0.15" />
-                <path d="M50,50 Q30,65 15,75 Z" fill="currentColor" fill-opacity="0.15" />
-                <path d="M50,50 Q70,42 85,32 Z" fill="currentColor" fill-opacity="0.15" />
-                <circle cx="15" cy="20" r="1.5" fill="currentColor" class="animate-pulse" stroke="none" />
-                <circle cx="35" cy="15" r="1" fill="currentColor" stroke="none" />
-                <circle cx="55" cy="35" r="2" fill="currentColor" class="animate-pulse" stroke="none" />
+        <!-- Opening Animation Overlay -->
+        <div class="opening-overlay" id="openingOverlay">
+        <!-- Decorative corner elements -->
+        <div class="absolute top-0 left-0 w-24 h-24 md:w-32 md:h-32 opacity-60 select-none pointer-events-none">
+            <svg viewBox="0 0 100 100" class="w-full h-full" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5">
+                <path d="M0,0 L30,0 M0,0 L0,30" stroke-linecap="round"/>
+                <path d="M5,5 L15,5 M5,5 L5,15" stroke-linecap="round" stroke-width="1"/>
+                <circle cx="8" cy="8" r="1.5" fill="rgba(255,255,255,0.1)" stroke="none"/>
             </svg>
         </div>
-        <div class="absolute top-0 right-0 w-36 md:w-56 lg:w-72 opacity-85 select-none pointer-events-none z-20 animate-sway-medium origin-top-right text-(--accent-color)">
-            <svg viewBox="0 0 100 100" class="w-full h-full transform scale-x-[-1]" fill="none" stroke="currentColor" stroke-width="1.2">
-                <path d="M0,0 Q30,10 50,50 T90,100" stroke-linecap="round" class="svg-stem" />
-                <path d="M15,10 Q5,25 0,35 Z" fill="currentColor" fill-opacity="0.15" />
-                <path d="M25,12 Q35,5 45,0 Z" fill="currentColor" fill-opacity="0.15" />
-                <path d="M30,22 Q15,35 10,48 Z" fill="currentColor" fill-opacity="0.15" />
-                <path d="M42,28 Q55,20 62,10 Z" fill="currentColor" fill-opacity="0.15" />
-                <path d="M50,50 Q30,65 15,75 Z" fill="currentColor" fill-opacity="0.15" />
-                <path d="M50,50 Q70,42 85,32 Z" fill="currentColor" fill-opacity="0.15" />
-                <circle cx="15" cy="20" r="1.5" fill="currentColor" class="animate-pulse" stroke="none" />
-                <circle cx="55" cy="35" r="2" fill="currentColor" class="animate-pulse" stroke="none" />
+        <div class="absolute top-0 right-0 w-24 h-24 md:w-32 md:h-32 opacity-60 select-none pointer-events-none">
+            <svg viewBox="0 0 100 100" class="w-full h-full" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5">
+                <path d="M100,0 L70,0 M100,0 L100,30" stroke-linecap="round"/>
+                <path d="M95,5 L85,5 M95,5 L95,15" stroke-linecap="round" stroke-width="1"/>
+                <circle cx="92" cy="8" r="1.5" fill="rgba(255,255,255,0.1)" stroke="none"/>
             </svg>
         </div>
-        <div class="absolute bottom-0 left-0 w-32 md:w-48 lg:w-64 opacity-80 select-none pointer-events-none z-20 animate-sway-medium origin-bottom-left text-(--accent-color)">
-            <svg viewBox="0 0 100 100" class="w-full h-full transform scale-y-[-1]" fill="none" stroke="currentColor" stroke-width="1.2">
-                <path d="M0,0 Q30,10 50,50 T90,100" stroke-linecap="round" class="svg-stem" />
-                <path d="M15,10 Q5,25 0,35 Z" fill="currentColor" fill-opacity="0.15" />
-                <path d="M25,12 Q35,5 45,0 Z" fill="currentColor" fill-opacity="0.15" />
-                <path d="M30,22 Q15,35 10,48 Z" fill="currentColor" fill-opacity="0.15" />
-                <circle cx="15" cy="20" r="1.5" fill="currentColor" class="animate-pulse" stroke="none" />
-                <circle cx="55" cy="35" r="2" fill="currentColor" class="animate-pulse" stroke="none" />
+        <div class="absolute bottom-0 left-0 w-24 h-24 md:w-32 md:h-32 opacity-60 select-none pointer-events-none">
+            <svg viewBox="0 0 100 100" class="w-full h-full" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5">
+                <path d="M0,100 L30,100 M0,100 L0,70" stroke-linecap="round"/>
+                <path d="M5,95 L15,95 M5,95 L5,85" stroke-linecap="round" stroke-width="1"/>
+                <circle cx="8" cy="92" r="1.5" fill="rgba(255,255,255,0.1)" stroke="none"/>
             </svg>
         </div>
-        <div class="absolute bottom-0 right-0 w-32 md:w-48 lg:w-64 opacity-80 select-none pointer-events-none z-20 animate-sway-slow origin-bottom-right text-(--accent-color)">
-            <svg viewBox="0 0 100 100" class="w-full h-full transform scale-x-[-1] scale-y-[-1]" fill="none" stroke="currentColor" stroke-width="1.2">
-                <path d="M0,0 Q30,10 50,50 T90,100" stroke-linecap="round" class="svg-stem" />
-                <path d="M15,10 Q5,25 0,35 Z" fill="currentColor" fill-opacity="0.15" />
-                <path d="M25,12 Q35,5 45,0 Z" fill="currentColor" fill-opacity="0.15" />
-                <path d="M30,22 Q15,35 10,48 Z" fill="currentColor" fill-opacity="0.15" />
-                <circle cx="15" cy="20" r="1.5" fill="currentColor" class="animate-pulse" stroke="none" />
-                <circle cx="55" cy="35" r="2" fill="currentColor" class="animate-pulse" stroke="none" />
+        <div class="absolute bottom-0 right-0 w-24 h-24 md:w-32 md:h-32 opacity-60 select-none pointer-events-none">
+            <svg viewBox="0 0 100 100" class="w-full h-full" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5">
+                <path d="M100,100 L70,100 M100,100 L100,70" stroke-linecap="round"/>
+                <path d="M95,95 L85,95 M95,95 L95,85" stroke-linecap="round" stroke-width="1"/>
+                <circle cx="92" cy="92" r="1.5" fill="rgba(255,255,255,0.1)" stroke="none"/>
             </svg>
         </div>
 
         <div class="min-h-full w-full flex flex-col items-center justify-center p-4 py-12 md:py-16 relative z-10">
-            <div class="relative max-w-lg w-full text-center text-white px-6 py-12 rounded-3xl backdrop-blur-lg bg-[rgba(var(--dark-rgb),0.35)] border border-white/15 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.6)] mx-4" data-aos="zoom-in" data-aos-duration="1400">
+            <div class="relative max-w-md w-full text-center px-8 py-10 md:py-12 rounded-2xl bg-white/5 backdrop-blur-2xl border border-white/10 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.6)] mx-4" data-aos="zoom-in" data-aos-duration="1400">
                 
-                <div class="uppercase text-[10px] tracking-[0.4em] text-(--accent-color) mb-3 font-['Montserrat'] font-light">The Wedding Invitation</div>
-                
-                <h2 class="font-['Great_Vibes'] text-6xl md:text-7xl text-white my-3 drop-shadow-[0_2px_10px_rgba(0,0,0,0.4)] py-1">{{ $setting->couple_name }}</h2>
-                
-                <div class="flex items-center justify-center gap-3 my-5">
-                    <div class="w-12 h-px bg-linear-to-r from-transparent to-white/40"></div>
-                    <svg class="w-4 h-4 text-(--accent-color) opacity-75" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                    </svg>
-                    <div class="w-12 h-px bg-linear-to-l from-transparent to-white/40"></div>
-                </div>
-                
-                <p class="text-xs font-light font-['Montserrat'] tracking-wide leading-relaxed text-white/80 max-w-sm mx-auto mb-6">
-                    Tanpa mengurangi rasa hormat, kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri hari istimewa kami.
-                </p>
-
-                <div class="my-6 p-6 rounded-2xl bg-[rgba(var(--dark-rgb),0.25)] border border-white/10 backdrop-blur-md shadow-2xl max-w-sm mx-auto transition-all duration-500 hover:border-(--accent-color)/30">
-                    <p class="text-[9px] tracking-[0.3em] uppercase text-white/60 mb-2.5 font-['Montserrat'] font-light">Kepada Yth. Bapak/Ibu/Saudara/i:</p>
-                    <div class="text-2xl font-['Cormorant_Garamond'] italic font-medium text-(--accent-color) tracking-wide border-b border-white/15 pb-2 mb-3 inline-block min-w-55">
-                        {!! $guestName !!}
-                    </div>
-                    
-                    @if($setting->max_guest && $setting->max_guest > 0)
-                    <div class="items-center justify-center gap-1.5 text-[10px] font-light text-white/70 font-['Montserrat'] bg-white/5 py-1 px-3.5 rounded-full border border-white/5 inline-flex mt-1">
-                        <svg class="w-3.5 h-3.5 text-(--accent-color) opacity-85" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                            <circle cx="9" cy="7" r="4" />
-                            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                        </svg>
-                        <span>Maks. <span class="font-medium text-white">{{ $setting->max_guest }} Orang</span></span>
-                    </div>
-                    @endif
+                <!-- Decorative gold ring pattern -->
+                <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-12 h-12 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm flex items-center justify-center">
+                    <div class="w-8 h-8 rounded-full border border-(--accent-color)/30"></div>
                 </div>
 
-                @if($events->first())
-                    <div class="text-[10px] font-['Montserrat'] uppercase tracking-[0.25em] bg-white/10 py-2.5 px-6 rounded-full inline-block mb-8 border border-white/5 backdrop-blur-sm shadow-inner text-white/90">
+                <!-- Decorative top line -->
+                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+
+                <div class="space-y-6">
+                    <!-- Label -->
+                    <div class="space-y-1">
+                        <div class="text-xs tracking-[0.35em] text-(--accent-color)/90 font-['Montserrat'] font-light uppercase">The Wedding Of</div>
+                        <div class="w-8 h-px bg-(--accent-color)/30 mx-auto"></div>
+                    </div>
+
+                    <!-- Couple Names -->
+                    <h2 class="font-['Great_Vibes'] text-5xl md:text-6xl text-white leading-[1.1] drop-shadow-[0_2px_20px_rgba(0,0,0,0.3)]">
+                        {{ $setting->couple_name }}
+                    </h2>
+
+                    <!-- Decorative divider -->
+                    <div class="flex items-center justify-center gap-4">
+                        <div class="w-8 h-px bg-gradient-to-r from-transparent to-white/20"></div>
+                        <div class="w-1.5 h-1.5 rounded-full bg-(--accent-color)/50"></div>
+                        <div class="w-8 h-px bg-gradient-to-l from-transparent to-white/20"></div>
+                    </div>
+
+                    <!-- Date -->
+                    @if($events->first())
+                    <div class="text-xs font-['Montserrat'] font-light tracking-[0.15em] text-white/60">
                         {{ \Carbon\Carbon::parse($events->first()->date)->translatedFormat('l, d F Y') }}
                     </div>
-                @endif
+                    @endif
 
-                <div class="relative">
-                    <button type="button" id="openInvitation" class="px-8 py-3.5 bg-linear-to-r from-(--primary-color) to-(--secondary-color) text-white hover:text-white rounded-full font-['Montserrat'] text-xs font-semibold uppercase tracking-[0.2em] shadow-lg hover:shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 flex items-center justify-center gap-3.5 mx-auto border border-white/10">
-                        <span>Buka Undangan</span>
-                        <svg class="w-4 h-4 animate-bounce text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                            <path d="M19 14l-7 7-7-7M12 21V3"/>
-                        </svg>
+                    <!-- Guest Card -->
+                    <div class="relative my-4 p-5 rounded-xl bg-white/5 border border-white/5 backdrop-blur-sm">
+                        <div class="absolute -top-2 left-1/2 -translate-x-1/2 px-3 bg-white/5 rounded-full">
+                            <span class="text-[8px] tracking-[0.2em] uppercase text-white/80 font-['Montserrat'] font-light">Kepada Yth.</span>
+                        </div>
+                        <div class="pt-2">
+                            <div class="text-xl md:text-2xl font-['Cormorant_Garamond'] italic font-light text-(--accent-color) tracking-wide">
+                                {!! $guestName !!}
+                            </div>
+                            @if($setting->max_guest && $setting->max_guest > 0)
+                            <div class="flex items-center justify-center gap-2 mt-2">
+                                <svg class="w-3 h-3 text-white/80" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                    <circle cx="9" cy="7" r="4" />
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                                </svg>
+                                <span class="text-[10px] text-white/80 font-light">Maks. {{ $setting->max_guest }} Orang per undangan</span>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+
+                    <!-- Message -->
+                    <p class="text-xs font-['Montserrat'] font-light leading-relaxed text-white/50 max-w-xs mx-auto">
+                        Tanpa mengurangi rasa hormat, kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri hari istimewa kami.
+                    </p>
+
+                    <!-- Opening Button -->
+                    <button type="button" id="openInvitation" class="group relative px-8 py-3.5 rounded-full overflow-hidden transition-all duration-500 hover:scale-105 active:scale-95 mx-auto">
+                        <div class="absolute inset-0 bg-gradient-to-r from-(--primary-color) to-(--secondary-color) opacity-90"></div>
+                        <div class="absolute inset-0 bg-gradient-to-r from-(--primary-color) to-(--secondary-color) blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
+                        <div class="absolute inset-0.5 rounded-full bg-white/10 backdrop-blur-sm"></div>
+                        <span class="relative flex items-center justify-center gap-3 text-white font-['Montserrat'] text-xs font-medium uppercase tracking-[0.2em]">
+                            <span>Buka Undangan</span>
+                            <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-y-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M19 14l-7 7-7-7M12 21V3"/>
+                            </svg>
+                        </span>
                     </button>
                 </div>
+
+                <!-- Decorative bottom line -->
+                <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
             </div>
         </div>
     </div>
@@ -723,34 +731,37 @@
             <div class="petal-container" id="heroPetals"></div>
             @endif
 
-            <div class="relative max-w-3xl w-full text-center text-white px-6 py-12 md:py-16 rounded-3xl backdrop-blur-lg bg-[rgba(var(--dark-rgb),0.35)] border border-white/15 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.6)] mx-4 z-10 mb-12" data-aos="fade-up" data-aos-duration="1500">
-                <span class="text-[10px] tracking-[0.4em] uppercase block mb-4 text-(--accent-color) font-['Montserrat']">Undangan Pernikahan</span>
-                <h1 class="font-['Great_Vibes'] text-6xl md:text-7xl lg:text-8xl mb-6 drop-shadow-[0_2px_10px_rgba(0,0,0,0.4)] py-1">{{ $setting->couple_name }}</h1>
-                
-                <div class="flex items-center justify-center gap-3 my-6">
-                    <div class="w-12 h-px bg-linear-to-r from-transparent to-white/40"></div>
-                    <svg class="w-4 h-4 text-(--accent-color) opacity-75" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-                    </svg>
-                    <div class="w-12 h-px bg-linear-to-l from-transparent to-white/40"></div>
-                </div>
+            <div class="relative max-w-2xl w-full text-center text-white px-5 py-8 md:py-10 rounded-2xl backdrop-blur-md bg-[rgba(var(--dark-rgb),0.25)] border border-white/10 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.4)] mx-3 z-10 mb-8" data-aos="fade-up" data-aos-duration="1200">
+    <span class="text-[8px] tracking-[0.35em] uppercase block mb-3 text-(--accent-color)/80 font-['Montserrat'] font-medium">Undangan Pernikahan</span>
+    
+    <h1 class="font-['Great_Vibes'] text-5xl md:text-6xl lg:text-7xl leading-[1.1] drop-shadow-[0_2px_15px_rgba(0,0,0,0.3)]">
+        {{ $setting->couple_name }}
+    </h1>
+    
+    <div class="flex items-center justify-center gap-3 my-4">
+        <div class="w-10 h-px bg-gradient-to-r from-transparent to-white/20"></div>
+        <svg class="w-3 h-3 text-(--accent-color)/60" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+        <div class="w-10 h-px bg-gradient-to-l from-transparent to-white/20"></div>
+    </div>
 
-                @if ( $setting->invitation_text_with_guest)
-                    <div class="text-xs md:text-base font-light leading-relaxed max-w-2xl mx-auto mb-8 text-white font-['Montserrat']">
-                        {!! $setting->invitation_text_with_guest !!}
-                    </div>
-                @else
-                    <div class="text-xs md:text-base font-light leading-relaxed max-w-2xl mx-auto mb-8 text-white font-['Montserrat']">
-                        Kepada Yth. Bapak/Ibu/Saudara/i: <br> Tamu Undangan
-                    </div>
-                @endif
-                
-                <div class="animate-bounce mt-6">
-                    <svg class="w-5 h-5 mx-auto text-(--accent-color) opacity-85" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                        <path d="M19 14l-7 7-7-7M12 21V3"/>
-                    </svg>
-                </div>
-            </div>
+    @if ($setting->invitation_text_with_guest)
+        <div class="text-xs md:text-sm font-light leading-relaxed max-w-xl mx-auto mb-6 text-white/80 font-['Montserrat']">
+            {!! $setting->invitation_text_with_guest !!}
+        </div>
+    @else
+        <div class="text-xs md:text-sm font-light leading-relaxed max-w-xl mx-auto mb-6 text-white/80 font-['Montserrat']">
+            Kepada Yth. Bapak/Ibu/Saudara/i: <br> Tamu Undangan
+        </div>
+    @endif
+    
+    <div class="animate-bounce mt-4">
+        <svg class="w-4 h-4 mx-auto text-(--accent-color)/60" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path d="M19 14l-7 7-7-7M12 21V3"/>
+        </svg>
+    </div>
+</div>
         </section>
 
         @if($isVideo)
