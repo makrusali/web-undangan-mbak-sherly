@@ -360,7 +360,7 @@
                     </div>
 
                     <!-- Hero Mask Alpha -->
-                    <div>
+                    {{-- <div>
                         <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                             Hero Mask Alpha <span class="text-xs text-gray-500">(0.0 - 1.0)</span>
                         </label>
@@ -386,7 +386,7 @@
                             />
                         </div>
                         <p class="mt-1 text-xs text-gray-500">0 = fully transparent, 1 = fully opaque</p>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
 
