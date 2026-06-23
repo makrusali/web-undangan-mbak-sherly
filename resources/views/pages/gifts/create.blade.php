@@ -22,7 +22,7 @@
     @endif
 
     <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
-        <form method="POST" action="{{ route('panel.gifts.store') }}">
+        <form method="POST" action="{{ route('panel.gifts.store') }}" enctype="multipart/form-data">
             @csrf
 
             <div class="space-y-5">
@@ -76,6 +76,23 @@
                         required
                     />
                     @error('account_number')
+                        <p class="mt-1 text-sm text-error-600 dark:text-error-500">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Bank Image -->
+                <div>
+                    <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                        Bank Icon / Logo
+                    </label>
+                    <input 
+                        type="file" 
+                        name="bank_image"
+                        accept="image/jpeg,image/png,image/jpg,image/gif,image/svg+xml,image/webp"
+                        class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:file:bg-brand-500/10 dark:file:text-brand-400 @error('bank_image') border-error-500 @enderror"
+                    />
+                    <p class="mt-1 text-xs text-gray-500">Max 2MB. Supported: JPEG, PNG, JPG, GIF, SVG, WebP</p>
+                    @error('bank_image')
                         <p class="mt-1 text-sm text-error-600 dark:text-error-500">{{ $message }}</p>
                     @enderror
                 </div>

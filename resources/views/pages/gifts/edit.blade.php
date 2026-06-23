@@ -22,7 +22,7 @@
     @endif
 
     <div class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03]">
-        <form method="POST" action="{{ route('panel.gifts.update', $gift) }}">
+        <form method="POST" action="{{ route('panel.gifts.update', $gift) }}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -81,6 +81,43 @@
                     @enderror
                 </div>
 
+                <!-- Bank Image -->
+                <div>
+                    <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                        Bank Icon / Logo
+                    </label>
+                    
+                    <!-- Current Bank Image Preview -->
+                    @if($gift->bank_image)
+                        <div class="mb-3 relative inline-block">
+                            <img src="{{ Storage::url($gift->bank_image) }}" 
+                                 alt="Bank Icon" 
+                                 class="w-16 h-16 object-cover rounded-lg border border-gray-200 dark:border-gray-700">
+                            <button type="button" 
+                                    onclick="deleteBankImage('{{ $gift->id }}')" 
+                                    class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors shadow-md">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+                        <p class="text-xs text-gray-500 mb-2">Current bank icon. Upload a new one to replace it.</p>
+                    @else
+                        <p class="text-xs text-gray-500 mb-2">No bank icon uploaded yet.</p>
+                    @endif
+
+                    <input 
+                        type="file" 
+                        name="bank_image"
+                        accept="image/jpeg,image/png,image/jpg,image/gif,image/svg+xml,image/webp"
+                        class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:file:bg-brand-500/10 dark:file:text-brand-400 @error('bank_image') border-error-500 @enderror"
+                    />
+                    <p class="mt-1 text-xs text-gray-500">Max 2MB. Supported: JPEG, PNG, JPG, GIF, SVG, WebP</p>
+                    @error('bank_image')
+                        <p class="mt-1 text-sm text-error-600 dark:text-error-500">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 <!-- Is Active -->
                 <div class="flex items-center gap-2">
                     <input 
@@ -117,4 +154,62 @@
             </div>
         </form>
     </div>
+
+    @push('scripts')
+    <script>
+        function deleteBankImage(giftId) {
+            if (!confirm('Are you sure you want to delete this bank icon?')) return;
+            
+            // Use the correct route with the gift parameter
+            const url = `{{ route('panel.gifts.delete-bank-image', ['gift' => '__ID__']) }}`.replace('__ID__', giftId);
+            
+            fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Deleted!',
+                        text: data.message,
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                    
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: data.message,
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 2000
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An error occurred while deleting the image.',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            });
+        }
+    </script>
+    @endpush
 @endsection

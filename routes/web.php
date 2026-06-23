@@ -7,6 +7,7 @@ use App\Http\Controllers\GiftController;
 use App\Http\Controllers\GuestController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\InvitationSettingController;
+use App\Http\Controllers\ThemeSettingController;
 use App\Http\Controllers\WeddingEventController;
 use App\Http\Controllers\WishController;
 use App\Http\Middleware\AuthMiddleware;
@@ -36,6 +37,8 @@ Route::middleware(AuthMiddleware::class)->prefix("panel")->name('panel.')->group
 
     Route::resource('gifts', GiftController::class);
     Route::put('gifts/{gift}/toggle-active', [GiftController::class, 'toggleActive'])->name('gifts.toggle-active');
+    Route::delete('gifts/{gift}/delete-bank-image', [GiftController::class, 'deleteBankImage'])
+        ->name('gifts.delete-bank-image');
 
     Route::resource('wishes', WishController::class)->except(['create']);
     Route::put('wishes/{wish}/approve', [WishController::class, 'approve'])->name('wishes.approve');
@@ -54,6 +57,17 @@ Route::middleware(AuthMiddleware::class)->prefix("panel")->name('panel.')->group
     Route::delete('invitation-settings/delete-bride', [InvitationSettingController::class, 'deleteBridePhoto'])->name('invitation-settings.delete-bride');
     Route::delete('invitation-settings/delete-couple', [InvitationSettingController::class, 'deleteCouplePhoto'])->name('invitation-settings.delete-couple');
     Route::delete('invitation-settings/delete-song', [InvitationSettingController::class, 'deleteSongFile'])->name('invitation-settings.delete-song');
+
+    Route::resource('theme-settings', ThemeSettingController::class)->except(['create', 'store', 'show', 'edit', 'destroy']);
+    Route::put('theme-settings/{themeSetting}', [ThemeSettingController::class, 'update'])->name('theme-settings.update');
+
+    // Delete routes for images
+    Route::delete('theme-settings/delete-background', [ThemeSettingController::class, 'deleteBackground'])->name('theme-settings.delete-background');
+    Route::delete('theme-settings/delete-decor-top-left', [ThemeSettingController::class, 'deleteDecorTopLeft'])->name('theme-settings.delete-decor-top-left');
+    Route::delete('theme-settings/delete-decor-top-right', [ThemeSettingController::class, 'deleteDecorTopRight'])->name('theme-settings.delete-decor-top-right');
+    Route::delete('theme-settings/delete-decor-bottom-left', [ThemeSettingController::class, 'deleteDecorBottomLeft'])->name('theme-settings.delete-decor-bottom-left');
+    Route::delete('theme-settings/delete-decor-bottom-right', [ThemeSettingController::class, 'deleteDecorBottomRight'])->name('theme-settings.delete-decor-bottom-right');
+    Route::delete('theme-settings/delete-decor-falling-petal', [ThemeSettingController::class, 'deleteDecorFallingPetal'])->name('theme-settings.delete-decor-falling-petal');
 });
 
 

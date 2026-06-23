@@ -11,6 +11,7 @@ class Gift extends Model
         'account_name',
         'account_number',
         'is_active',
+        'bank_image',
     ];
 
     protected $casts = [

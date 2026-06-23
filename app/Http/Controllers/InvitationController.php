@@ -7,7 +7,9 @@ use App\Models\WeddingEvent;
 use App\Models\Gallery;
 use App\Models\Guest;
 use App\Models\Wish;
+use App\Models\Gift;
 use App\Models\InvitationAccess;
+use App\Models\ThemeSetting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -35,13 +37,19 @@ class InvitationController extends Controller
         // Get galleries
         $galleries = Gallery::orderBy('sort_order')->get();
 
+        $gifts = Gift::where('is_active', true)->get();
+
         // Get approved wishes
         $wishes = Wish::where('is_approved', true)
             ->latest()
             ->take(20)
             ->get();
 
-        return view('pages.invitation.index', compact('setting', 'events', 'galleries', 'wishes'));
+        $themeSetting = ThemeSetting::first();
+
+        $guestName = 'Tamu Undangan';
+
+        return view('pages.invitation.index', compact('setting', 'events', 'galleries', 'wishes', 'gifts', 'themeSetting', 'guestName'));
     }
 
     /**
@@ -128,12 +136,16 @@ class InvitationController extends Controller
             }
         }
 
+        $gifts = Gift::where('is_active', true)->get();
+
         $text = $setting->invitation_text ?? '';
         $text = str_replace('{{guest}}', $guestName, $text);
         $text = str_replace('{{max_guest}}', $maxGuest ? (string)$maxGuest : '', $text);
 
         $setting->invitation_text_with_guest = $text;
 
-        return view('pages.invitation.index', compact('setting', 'events', 'galleries', 'wishes', 'guest'));
+        $themeSetting = ThemeSetting::first();
+
+        return view('pages.invitation.index', compact('setting', 'events', 'galleries', 'wishes', 'guest', 'guestName', 'gifts', 'themeSetting'));
     }
 }

@@ -42,6 +42,11 @@ class MenuHelper
                 'name' => 'Invitation Settings',
                 'path' => route('panel.invitation-settings.index'),
             ],
+            [
+                'icon' => 'forms',
+                'name' => 'Theme Settings',
+                'path' => route('panel.theme-settings.index'),
+            ],
         ];
     }
 

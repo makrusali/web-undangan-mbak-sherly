@@ -6,6 +6,7 @@ use App\Models\Gift;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
 
 class GiftController extends Controller
 {
@@ -35,6 +36,7 @@ class GiftController extends Controller
             'bank_name' => 'required|string|max:255',
             'account_name' => 'required|string|max:255',
             'account_number' => 'required|string|max:50',
+            'bank_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'is_active' => 'sometimes|boolean',
         ]);
 
@@ -45,12 +47,20 @@ class GiftController extends Controller
                 ->with('error', 'Please fix the validation errors.');
         }
 
-        Gift::create([
+        $data = [
             'bank_name' => $request->bank_name,
             'account_name' => $request->account_name,
             'account_number' => $request->account_number,
             'is_active' => $request->has('is_active'),
-        ]);
+        ];
+
+        // Handle bank image upload
+        if ($request->hasFile('bank_image')) {
+            $path = $request->file('bank_image')->store('gifts/bank-images', 'public');
+            $data['bank_image'] = $path;
+        }
+
+        Gift::create($data);
 
         return redirect()->route('panel.gifts.index')
             ->with('success', 'Gift account created successfully.');
@@ -73,6 +83,7 @@ class GiftController extends Controller
             'bank_name' => 'required|string|max:255',
             'account_name' => 'required|string|max:255',
             'account_number' => 'required|string|max:50',
+            'bank_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'is_active' => 'sometimes|boolean',
         ]);
 
@@ -83,12 +94,25 @@ class GiftController extends Controller
                 ->with('error', 'Please fix the validation errors.');
         }
 
-        $gift->update([
+        $data = [
             'bank_name' => $request->bank_name,
             'account_name' => $request->account_name,
             'account_number' => $request->account_number,
             'is_active' => $request->has('is_active'),
-        ]);
+        ];
+
+        // Handle bank image upload
+        if ($request->hasFile('bank_image')) {
+            // Delete old image if exists
+            if ($gift->bank_image) {
+                Storage::disk('public')->delete($gift->bank_image);
+            }
+
+            $path = $request->file('bank_image')->store('gifts/bank-images', 'public');
+            $data['bank_image'] = $path;
+        }
+
+        $gift->update($data);
 
         return redirect()->route('panel.gifts.index')
             ->with('success', 'Gift account updated successfully.');
@@ -99,11 +123,37 @@ class GiftController extends Controller
      */
     public function destroy(Gift $gift)
     {
+        // Delete bank image if exists
+        if ($gift->bank_image) {
+            Storage::disk('public')->delete($gift->bank_image);
+        }
+
         $bankName = $gift->bank_name;
         $gift->delete();
 
         return redirect()->route('panel.gifts.index')
-            ->with('success', "Gift account deleted successfully.");
+            ->with('success', "Gift account '{$bankName}' deleted successfully.");
+    }
+
+    /**
+     * Delete bank image only.
+     */
+    public function deleteBankImage(Gift $gift)
+    {
+        if ($gift->bank_image) {
+            Storage::disk('public')->delete($gift->bank_image);
+            $gift->update(['bank_image' => null]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Bank image deleted successfully.'
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'No bank image found to delete.'
+        ], 404);
     }
 
     /**
