@@ -823,7 +823,6 @@
                 <div class="grid md:grid-cols-2 gap-12 lg:gap-16 px-4">
                     <div class="text-center md:pb-0" data-aos="fade-right" data-aos-duration="1200">
                         <div class="relative inline-block mb-8">
-                            <div class="absolute -inset-2 bg-gradient-custom rounded-[35px] opacity-25 blur-sm"></div>
                             @if($setting->groom_photo)
                                 <img src="{{ $setting->groom_photo_url }}" alt="{{ $setting->groom_fullname }}" 
                                      class="couple-photo relative z-10 hover:scale-[1.03] transition-transform duration-500 rounded-[30px] w-80">
@@ -852,7 +851,6 @@
 
                     <div class="text-center" data-aos="fade-left" data-aos-duration="1200">
                         <div class="relative inline-block mb-8">
-                            <div class="absolute -inset-2 bg-gradient-custom rounded-[35px] opacity-25 blur-sm"></div>
                             @if($setting->bride_photo)
                                 <img src="{{ $setting->bride_photo_url }}" alt="{{ $setting->bride_fullname }}" 
                                      class="couple-photo relative z-10 hover:scale-[1.03] transition-transform duration-500 rounded-[30px] w-80">
