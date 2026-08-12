@@ -61,6 +61,18 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet font-serif font-display">
 
+    <link
+        rel="preload"
+        as="image"
+        href="{{ $setting->hero_image_url }}"
+    >
+    
+    <link
+        rel="preload"
+        as="image"
+        href="{{ $weddingBgp }}"
+    >
+
     <!-- Tailwind CSS -->
     @vite(['resources/css/app.css'])
     
@@ -1002,7 +1014,7 @@
                     <div class="text-center md:pb-0" data-aos="fade-right" data-aos-duration="1200">
                         <div class="relative inline-block mb-8">
                             @if($setting->groom_photo)
-                                <img src="{{ $setting->groom_photo_url }}" alt="{{ $setting->groom_fullname }}" 
+                                <img src="{{ $setting->groom_photo_url }}" loading="lazy" alt="{{ $setting->groom_fullname }}" 
                                      class="couple-photo relative border-4 shadow-xl border-white z-10 hover:scale-[1.03] transition-transform duration-500 rounded-[30px] w-80">
                             @else
                                 <div class="couple-photo bg-gradient-custom flex items-center justify-center relative z-10 rounded-[30px]">
