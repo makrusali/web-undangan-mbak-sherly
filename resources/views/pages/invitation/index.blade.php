@@ -1458,143 +1458,244 @@
             });
 
             function optimizedLoading() {
-                if (window._loadingInitialized) {
-                    return;
-                }
-
+                if (window._loadingInitialized) return;
                 window._loadingInitialized = true;
 
-                const loadingBar = document.getElementById('loadingBar');
                 const loadingOverlay = document.getElementById('loadingOverlay');
+                const loadingBar = document.getElementById('loadingBar');
                 const loadingPercentage = document.getElementById('loadingPercentage');
-                
-                // Check if elements exist
+
                 if (!loadingOverlay) {
                     console.warn('Loading overlay not found');
                     return;
                 }
 
-                // Check if already hidden
                 if (loadingOverlay.classList.contains('hidden')) {
                     return;
                 }
 
-                const maxDuration = 5000;
-                let totalBackgroundImages = 0;
-                let loadedBackgroundImages = 0;
-                let isComplete = false;
-                
-                // Get all elements with background-image
-                function getBackgroundImageElements() {
-                    const elements = [];
-                    const allElements = document.querySelectorAll('*');
-                    for (let i = 0; i < allElements.length; i++) {
-                        const el = allElements[i];
-                        const style = getComputedStyle(el);
-                        const bgImage = style.backgroundImage;
-                        if (bgImage && bgImage !== 'none' && bgImage !== '') {
-                            elements.push(el);
+                const MAX_DURATION = 5000;
+
+                let completed = false;
+                let progress = 0;
+
+                // --------------------------------------------------
+                // UI
+                // --------------------------------------------------
+
+                function updateProgress(value) {
+                    value = Math.max(0, Math.min(100, Math.round(value)));
+
+                    if (value < progress) return;
+
+                    progress = value;
+
+                    if (loadingBar) {
+                        loadingBar.style.width = `${value}%`;
+                    }
+
+                    if (loadingPercentage) {
+                        loadingPercentage.textContent = `${value}%`;
+                    }
+                }
+
+                function completeLoading() {
+                    if (completed) return;
+
+                    completed = true;
+
+                    updateProgress(100);
+
+                    // Allow the progress bar to reach 100%
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(() => {
+                            loadingOverlay.style.transition =
+                                'opacity 0.4s ease';
+
+                            loadingOverlay.style.opacity = '0';
+
+                            setTimeout(() => {
+                                loadingOverlay.style.display = 'none';
+                                loadingOverlay.classList.add('hidden');
+                            }, 400);
+                        });
+                    });
+                }
+
+                // --------------------------------------------------
+                // Get background URLs
+                // --------------------------------------------------
+
+                function extractUrls(backgroundImage) {
+                    if (!backgroundImage || backgroundImage === 'none') {
+                        return [];
+                    }
+
+                    const urls = [];
+
+                    // Supports:
+                    // url("image.jpg")
+                    // url('image.jpg')
+                    // url(image.jpg)
+                    const regex = /url\(\s*(['"]?)(.*?)\1\s*\)/gi;
+
+                    let match;
+
+                    while ((match = regex.exec(backgroundImage)) !== null) {
+                        const url = match[2];
+
+                        if (
+                            url &&
+                            !url.startsWith('data:') &&
+                            !url.startsWith('blob:')
+                        ) {
+                            urls.push(url);
                         }
                     }
-                    return elements;
+
+                    return urls;
                 }
-                
-                // Extract URL from background-image style
-                function getBackgroundUrl(el) {
-                    const style = getComputedStyle(el);
-                    const bgImage = style.backgroundImage;
-                    const match = bgImage.match(/url\(['"]?(.*?)['"]?\)/i);
-                    return match ? match[1] : null;
+
+                function getBackgroundUrls() {
+                    const urls = new Set();
+
+                    document.querySelectorAll('*').forEach((element) => {
+                        const style = getComputedStyle(element);
+
+                        extractUrls(style.backgroundImage).forEach((url) => {
+                            urls.add(url);
+                        });
+                    });
+
+                    return [...urls];
                 }
-                
-                // Track background images
-                function trackBackgroundImages() {
-                    const elements = getBackgroundImageElements();
-                    const uniqueUrls = new Set();
-                    
-                    for (let i = 0; i < elements.length; i++) {
-                        const url = getBackgroundUrl(elements[i]);
-                        if (url && url !== 'none' && !url.startsWith('data:')) {
-                            uniqueUrls.add(url);
+
+                // --------------------------------------------------
+                // Load image
+                // --------------------------------------------------
+
+                function loadImage(url) {
+                    return new Promise((resolve) => {
+                        const image = new Image();
+
+                        let finished = false;
+
+                        function done() {
+                            if (finished) return;
+
+                            finished = true;
+                            resolve();
                         }
-                    }
-                    
-                    totalBackgroundImages = uniqueUrls.size;
-                    
-                    if (totalBackgroundImages === 0) {
-                        // No background images to load, complete immediately
-                        completeLoading();
-                        return;
-                    }
-                    
-                    // Load each unique background image
-                    uniqueUrls.forEach(function(url) {
-                        const img = new Image();
-                        img.onload = function() {
-                            loadedBackgroundImages++;
-                            checkProgress();
-                        };
-                        img.onerror = function() {
-                            loadedBackgroundImages++;
-                            checkProgress();
-                        };
-                        img.src = url;
-                        
-                        // Handle case where image is already cached
-                        if (img.complete && img.naturalHeight > 0) {
-                            loadedBackgroundImages++;
-                            checkProgress();
+
+                        image.onload = done;
+                        image.onerror = done;
+
+                        image.src = url;
+
+                        // Already cached
+                        if (image.complete) {
+                            done();
                         }
                     });
                 }
-                
-                function calculateProgress() {
-                    if (totalBackgroundImages === 0) return 100;
-                    const progress = (loadedBackgroundImages / totalBackgroundImages) * 100;
-                    return Math.min(progress, 100);
-                }
-                
-                function checkProgress() {
-                    if (isComplete) return;
-                    
-                    const progress = calculateProgress();
-                    updateProgress(progress);
-                    
-                    if (progress >= 100 && loadedBackgroundImages >= totalBackgroundImages) {
+
+                // --------------------------------------------------
+                // Main loading process
+                // --------------------------------------------------
+
+                async function startLoading() {
+                    const backgroundUrls = getBackgroundUrls();
+
+                    console.log(
+                        `Found ${backgroundUrls.length} background image(s)`
+                    );
+
+                    // Nothing to load
+                    if (backgroundUrls.length === 0) {
+                        updateProgress(100);
                         completeLoading();
+                        return;
                     }
-                }
-                
-                function updateProgress(progress) {
-                    if (loadingBar) {
-                        loadingBar.style.width = Math.min(progress, 100) + '%';
+
+                    let loaded = 0;
+                    const total = backgroundUrls.length;
+
+                    const updateImageProgress = () => {
+                        loaded++;
+
+                        // Reserve a little room so it doesn't instantly
+                        // jump to 100% before the rest of the page is ready.
+                        const imageProgress = (loaded / total) * 90;
+
+                        updateProgress(imageProgress);
+                    };
+
+                    await Promise.all(
+                        backgroundUrls.map(async (url) => {
+                            await loadImage(url);
+                            updateImageProgress();
+                        })
+                    );
+
+                    // Background images are ready.
+                    updateProgress(95);
+
+                    // Wait until the browser has finished loading
+                    // the rest of the page.
+                    if (document.fonts && document.fonts.ready) {
+                        try {
+                            await document.fonts.ready;
+                        } catch (error) {
+                            console.warn('Font loading failed:', error);
+                        }
                     }
-                    if (loadingPercentage) {
-                        loadingPercentage.textContent = Math.min(Math.round(progress), 100) + '%';
-                    }
-                }
-                
-                function completeLoading() {
-                    if (isComplete) return;
-                    isComplete = true;
-                    
+
                     updateProgress(100);
-                    
-                    loadingOverlay.style.transition = 'opacity 0.5s ease';
-                    loadingOverlay.style.opacity = '0';
-                    loadingOverlay.style.display = 'none';
+
+                    completeLoading();
                 }
-                
-                // Start tracking background images
-                trackBackgroundImages();
-                
-                // Set timeout to force complete after max duration
-                setTimeout(function() {
-                    if (!isComplete) {
-                        console.log('Loading timed out, forcing completion');
+
+                // --------------------------------------------------
+                // Wait for CSS/page
+                // --------------------------------------------------
+
+                function initialize() {
+                    /*
+                    * requestAnimationFrame gives the browser a chance
+                    * to apply CSS before getComputedStyle() is called.
+                    */
+                    requestAnimationFrame(() => {
+                        requestAnimationFrame(() => {
+                            startLoading();
+                        });
+                    });
+                }
+
+                // --------------------------------------------------
+                // Safety timeout
+                // --------------------------------------------------
+
+                setTimeout(() => {
+                    if (!completed) {
+                        console.warn(
+                            'Loading timeout reached. Forcing completion.'
+                        );
+
                         completeLoading();
                     }
-                }, maxDuration);
+                }, MAX_DURATION);
+
+                // --------------------------------------------------
+                // Start
+                // --------------------------------------------------
+
+                if (document.readyState === 'loading') {
+                    document.addEventListener('DOMContentLoaded', initialize, {
+                        once: true
+                    });
+                } else {
+                    initialize();
+                }
             }
 
             optimizedLoading();
