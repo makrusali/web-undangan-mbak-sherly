@@ -1597,13 +1597,6 @@
                 }, maxDuration);
             }
 
-            // Initialize loading when DOM is ready
-            document.addEventListener('DOMContentLoaded', function() {
-                // Small delay to ensure all elements are rendered
-                setTimeout(function() {
-                    optimizedLoading();
-                }, 100);
-            });
             optimizedLoading();
 
 
