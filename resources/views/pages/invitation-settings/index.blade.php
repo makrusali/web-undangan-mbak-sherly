@@ -191,7 +191,7 @@
                     </div>
                 </div>
             </div>
-
+            
             <!-- Bride Information -->
             <div class="mb-8">
                 <h4 class="text-md font-semibold text-gray-800 dark:text-white/90 mb-4">Bride Information</h4>

@@ -68,6 +68,7 @@ Route::middleware(AuthMiddleware::class)->prefix("panel")->name('panel.')->group
     Route::delete('theme-settings/delete-decor-bottom-left', [ThemeSettingController::class, 'deleteDecorBottomLeft'])->name('theme-settings.delete-decor-bottom-left');
     Route::delete('theme-settings/delete-decor-bottom-right', [ThemeSettingController::class, 'deleteDecorBottomRight'])->name('theme-settings.delete-decor-bottom-right');
     Route::delete('theme-settings/delete-decor-falling-petal', [ThemeSettingController::class, 'deleteDecorFallingPetal'])->name('theme-settings.delete-decor-falling-petal');
+    Route::delete('theme-settings/delete-couple-and-decor', [ThemeSettingController::class, 'deleteCoupleAndDecor'])->name('theme-settings.delete-couple-and-decor');
 });
 
 

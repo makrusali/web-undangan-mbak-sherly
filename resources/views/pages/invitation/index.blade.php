@@ -6,7 +6,7 @@
     $veryLightColor = $themeSetting->very_light_color ?? '#fffafd';
     $darkColor = $themeSetting->dark_color ?? '#42556b';
     
-    $weddingBgp = $themeSetting->backgrond_image ? Storage::url($themeSetting->backgrond_image) : 'https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1920&auto=format&fit=crop';
+    $weddingBgp = $themeSetting->backgrond_image ? Storage::url($themeSetting->backgrond_image) : '';
     $weddingBgpPath = $themeSetting->backgrond_image ? Storage::path($themeSetting->backgrond_image) : null;
     $weddingBgpExtension = $weddingBgpPath ? pathinfo($weddingBgpPath, PATHINFO_EXTENSION) : null;
     $isVideo = in_array(strtolower($weddingBgpExtension ?? ''), ['mp4', 'webm', 'ogg', 'mov']);
@@ -16,6 +16,7 @@
     $decor_bottom_left = $themeSetting->decor_bottom_left_image ? Storage::url($themeSetting->decor_bottom_left_image) : null;
     $decor_bottom_right = $themeSetting->decor_bottom_right_image ? Storage::url($themeSetting->decor_bottom_right_image) : null;
     $decor_falling_petal = $themeSetting->decor_falling_petal_image ? Storage::url($themeSetting->decor_falling_petal_image) : null;
+    $couple_and_decor = $themeSetting->couple_and_decor ? Storage::url($themeSetting->couple_and_decor) : null;
     
     $hex2rgb = function($hex) {
         $hex = str_replace("#", "", $hex);
@@ -57,7 +58,8 @@
     <link rel="icon" type="image/x-icon" href="/images/favicon-32x32.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Cinzel:wght@400;500;600;700&family=Montserrat:wght@200;300;400;500;600;700&family=Great+Vibes&family=Sacramento&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet font-serif font-display">
+
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Great+Vibes&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet font-serif font-display">
 
     <!-- Tailwind CSS -->
     @vite(['resources/css/app.css'])
@@ -96,10 +98,7 @@
         }
 
         .font-great { font-family: 'Great Vibes', cursive !important; }
-        .font-sacramento { font-family: 'Sacramento', cursive !important; }
         .font-playfair { font-family: 'Cormorant Garamond', 'Playfair Display', serif !important; }
-        .font-display { font-family: 'Cinzel', 'Montserrat', sans-serif !important; }
-        .font-sans-alt { font-family: 'Montserrat', 'Inter', sans-serif !important; }
 
         .bg-primary-custom { background-color: var(--primary-color); }
         .text-primary-custom { color: var(--primary-color); }
@@ -177,8 +176,8 @@
             overflow: hidden;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 100dvw;
+            height: 100dvh;
             background: linear-gradient(135deg, rgba(var(--dark-rgb), 0.2), rgba(var(--primary-rgb), 0.25)), url('{{ $setting->hero_image_url }}');
             background-size: cover;
             background-position: center;
@@ -573,6 +572,38 @@
             position: relative;
             z-index: 15;
         }
+
+          .animate-float {
+        animation: float 6s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+        0%, 100% {
+            transform: translateY(0px) rotate(0deg);
+        }
+        25% {
+            transform: translateY(-10px) rotate(3deg);
+        }
+        50% {
+            transform: translateY(-20px) rotate(-3deg);
+        }
+        75% {
+            transform: translateY(-8px) rotate(2deg);
+        }
+    }
+    
+    .animate-float svg {
+        animation: float-item 4s ease-in-out infinite;
+    }
+    
+    @keyframes float-item {
+        0%, 100% {
+            transform: translateY(0px) scale(1);
+        }
+        50% {
+            transform: translateY(-15px) scale(1.1);
+        }
+    }
     </style>
 </head>
 <body class="overflow-hidden w-full h-screen">
@@ -580,133 +611,196 @@
     <!-- Loading Animation -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="flex flex-col items-center justify-center">
+            <!-- Animated Heart -->
             <svg class="w-14 h-14 text-white/90 animate-pulse" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
             </svg>
             
-            <div class="flex items-center gap-1.5 mt-5">
-                <div class="w-1.5 h-1.5 bg-white/30 rounded-full animate-bounce" style="animation-delay: 0s"></div>
-                <div class="w-1.5 h-1.5 bg-white/50 rounded-full animate-bounce" style="animation-delay: 0.15s"></div>
-                <div class="w-1.5 h-1.5 bg-white/70 rounded-full animate-bounce" style="animation-delay: 0.3s"></div>
+            <!-- Loading Text -->
+            <p class="text-white/70 text-xs font-light tracking-widest uppercase mt-4">Memuat Undangan</p>
+            
+            <!-- Progress Bar -->
+            <div class="w-48 md:w-56 h-1 bg-white/10 rounded-full overflow-hidden mt-4">
+                <div id="loadingBar" class="h-full rounded-full transition-all duration-300" style="width: 0%; background: linear-gradient(to right, #9fc9f3, #6fa3d9);"></div>
             </div>
+            
+            <!-- Percentage -->
+            <p id="loadingPercentage" class="text-white/90 text-[12px] font-light mt-2">0%</p>
         </div>
     </div>
 
-        <!-- Opening Animation Overlay -->
-        <div class="opening-overlay" id="openingOverlay">
-        <!-- Decorative corner elements -->
-        <div class="absolute top-0 left-0 w-24 h-24 md:w-32 md:h-32 opacity-60 select-none pointer-events-none">
-            <svg viewBox="0 0 100 100" class="w-full h-full" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5">
-                <path d="M0,0 L30,0 M0,0 L0,30" stroke-linecap="round"/>
-                <path d="M5,5 L15,5 M5,5 L5,15" stroke-linecap="round" stroke-width="1"/>
-                <circle cx="8" cy="8" r="1.5" fill="rgba(255,255,255,0.1)" stroke="none"/>
-            </svg>
-        </div>
-        <div class="absolute top-0 right-0 w-24 h-24 md:w-32 md:h-32 opacity-60 select-none pointer-events-none">
-            <svg viewBox="0 0 100 100" class="w-full h-full" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5">
-                <path d="M100,0 L70,0 M100,0 L100,30" stroke-linecap="round"/>
-                <path d="M95,5 L85,5 M95,5 L95,15" stroke-linecap="round" stroke-width="1"/>
-                <circle cx="92" cy="8" r="1.5" fill="rgba(255,255,255,0.1)" stroke="none"/>
-            </svg>
-        </div>
-        <div class="absolute bottom-0 left-0 w-24 h-24 md:w-32 md:h-32 opacity-60 select-none pointer-events-none">
-            <svg viewBox="0 0 100 100" class="w-full h-full" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5">
-                <path d="M0,100 L30,100 M0,100 L0,70" stroke-linecap="round"/>
-                <path d="M5,95 L15,95 M5,95 L5,85" stroke-linecap="round" stroke-width="1"/>
-                <circle cx="8" cy="92" r="1.5" fill="rgba(255,255,255,0.1)" stroke="none"/>
-            </svg>
-        </div>
-        <div class="absolute bottom-0 right-0 w-24 h-24 md:w-32 md:h-32 opacity-60 select-none pointer-events-none">
-            <svg viewBox="0 0 100 100" class="w-full h-full" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5">
-                <path d="M100,100 L70,100 M100,100 L100,70" stroke-linecap="round"/>
-                <path d="M95,95 L85,95 M95,95 L95,85" stroke-linecap="round" stroke-width="1"/>
-                <circle cx="92" cy="92" r="1.5" fill="rgba(255,255,255,0.1)" stroke="none"/>
-            </svg>
-        </div>
+    <!-- Opening Animation Overlay -->
+    <div class="opening-overlay" id="openingOverlay">
+    <!-- Decorative corner elements -->
+    <div class="absolute top-0 left-0 w-24 h-24 md:w-32 md:h-32 opacity-60 select-none pointer-events-none">
+        <svg viewBox="0 0 100 100" class="w-full h-full" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5">
+            <path d="M0,0 L30,0 M0,0 L0,30" stroke-linecap="round"/>
+            <path d="M5,5 L15,5 M5,5 L5,15" stroke-linecap="round" stroke-width="1"/>
+            <circle cx="8" cy="8" r="1.5" fill="rgba(255,255,255,0.1)" stroke="none"/>
+        </svg>
+    </div>
+    <div class="absolute top-0 right-0 w-24 h-24 md:w-32 md:h-32 opacity-60 select-none pointer-events-none">
+        <svg viewBox="0 0 100 100" class="w-full h-full" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5">
+            <path d="M100,0 L70,0 M100,0 L100,30" stroke-linecap="round"/>
+            <path d="M95,5 L85,5 M95,5 L95,15" stroke-linecap="round" stroke-width="1"/>
+            <circle cx="92" cy="8" r="1.5" fill="rgba(255,255,255,0.1)" stroke="none"/>
+        </svg>
+    </div>
+    <div class="absolute bottom-0 left-0 w-24 h-24 md:w-32 md:h-32 opacity-60 select-none pointer-events-none">
+        <svg viewBox="0 0 100 100" class="w-full h-full" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5">
+            <path d="M0,100 L30,100 M0,100 L0,70" stroke-linecap="round"/>
+            <path d="M5,95 L15,95 M5,95 L5,85" stroke-linecap="round" stroke-width="1"/>
+            <circle cx="8" cy="92" r="1.5" fill="rgba(255,255,255,0.1)" stroke="none"/>
+        </svg>
+    </div>
+    <div class="absolute bottom-0 right-0 w-24 h-24 md:w-32 md:h-32 opacity-60 select-none pointer-events-none">
+        <svg viewBox="0 0 100 100" class="w-full h-full" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="1.5">
+            <path d="M100,100 L70,100 M100,100 L100,70" stroke-linecap="round"/>
+            <path d="M95,95 L85,95 M95,95 L95,85" stroke-linecap="round" stroke-width="1"/>
+            <circle cx="92" cy="92" r="1.5" fill="rgba(255,255,255,0.1)" stroke="none"/>
+        </svg>
+    </div>
 
-        <div class="min-h-full w-full flex flex-col items-center justify-center p-4 py-12 md:py-16 relative z-10">
-            <div class="relative max-w-md w-full text-center px-8 py-10 md:py-12 rounded-2xl bg-white/5 backdrop-blur-2xl border border-white/10 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.6)] mx-4" data-aos="zoom-in" data-aos-duration="1400">
-                
-                <!-- Decorative gold ring pattern -->
-                <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-12 h-12 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm flex items-center justify-center">
-                    <div class="w-8 h-8 rounded-full border border-(--accent-color)/30"></div>
-                </div>
+  <div class="min-h-full w-full flex flex-col items-center justify-end p-4 py-8 md:py-10 relative z-10">
+    <!-- Floating Love Objects - Top Left -->
+<div class="absolute top-8 left-4 md:left-8 z-20 flex flex-col gap-8 animate-float">
+    <!-- Big Blue Heart -->
+    <svg class="w-12 h-12 md:w-16 md:h-16 text-blue-400 opacity-100" style="animation-delay: 0s;" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+    </svg>
+    <!-- Medium Blue Heart -->
+    <svg class="w-10 h-10 md:w-12 md:h-12 text-blue-300 opacity-90" style="animation-delay: 1.5s;" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+    </svg>
+    <!-- Ring -->
+    <svg class="w-6 h-6 md:w-8 md:h-8 text-yellow-400 opacity-60" style="animation-delay: 1s;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M12 12v6"/>
+        <path d="M8 18h8"/>
+    </svg>
+    <!-- Small Blue Heart -->
+    <svg class="w-6 h-6 md:w-7 md:h-7 text-blue-200 opacity-80" style="animation-delay: 2.5s;" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+    </svg>
+</div>
 
-                <!-- Decorative top line -->
-                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+<!-- Floating Love Objects - Top Right -->
+<div class="absolute top-8 right-4 md:right-8 z-20 flex flex-col gap-8 animate-float">
+    <!-- Big Blue Heart -->
+    <svg class="w-14 h-14 md:w-20 md:h-20 text-blue-400 opacity-75" style="animation-delay: 0.8s;" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+    </svg>
+    <!-- Ring -->
+    <svg class="w-6 h-6 md:w-8 md:h-8 text-yellow-300 opacity-70" style="animation-delay: 1.5s;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M12 12v6"/>
+        <path d="M8 18h8"/>
+    </svg>
+    <!-- Medium Blue Heart -->
+    <svg class="w-10 h-10 md:w-14 md:h-14 text-blue-300 opacity-65" style="animation-delay: 0.3s;" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+    </svg>
+    <!-- Small Blue Heart -->
+    <svg class="w-5 h-5 md:w-6 md:h-6 text-blue-200 opacity-55" style="animation-delay: 2s;" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+    </svg>
+</div>
 
-                <div class="space-y-6">
-                    <!-- Label -->
-                    <div class="space-y-1">
-                        <div class="text-xs tracking-[0.35em] text-(--accent-color)/90 font-['Montserrat'] font-light uppercase">The Wedding Of</div>
-                        <div class="w-8 h-px bg-(--accent-color)/30 mx-auto"></div>
-                    </div>
-
-                    <!-- Couple Names -->
-                    <h2 class="font-['Great_Vibes'] text-5xl md:text-6xl text-white leading-[1.1] drop-shadow-[0_2px_20px_rgba(0,0,0,0.3)]">
-                        {{ $setting->couple_name }}
-                    </h2>
-
-                    <!-- Decorative divider -->
-                    <div class="flex items-center justify-center gap-4">
-                        <div class="w-8 h-px bg-gradient-to-r from-transparent to-white/20"></div>
-                        <div class="w-1.5 h-1.5 rounded-full bg-(--accent-color)/50"></div>
-                        <div class="w-8 h-px bg-gradient-to-l from-transparent to-white/20"></div>
-                    </div>
-
-                    <!-- Date -->
-                    @if($events->first())
-                    <div class="text-xs font-['Montserrat'] font-light tracking-[0.15em] text-white/60">
-                        {{ \Carbon\Carbon::parse($events->first()->date)->translatedFormat('l, d F Y') }}
-                    </div>
-                    @endif
-
-                    <!-- Guest Card -->
-                    <div class="relative my-4 p-5 rounded-xl bg-white/5 border border-white/5 backdrop-blur-sm">
-                        <div class="absolute -top-2 left-1/2 -translate-x-1/2 px-3 bg-white/5 rounded-full">
-                            <span class="text-[8px] tracking-[0.2em] uppercase text-white/80 font-['Montserrat'] font-light">Kepada Yth.</span>
-                        </div>
-                        <div class="pt-2">
-                            <div class="text-xl md:text-2xl font-['Cormorant_Garamond'] italic font-light text-(--accent-color) tracking-wide">
-                                {!! $guestName !!}
-                            </div>
-                            @if($setting->max_guest && $setting->max_guest > 0)
-                            <div class="flex items-center justify-center gap-2 mt-2">
-                                <svg class="w-3 h-3 text-white/80" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                                    <circle cx="9" cy="7" r="4" />
-                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
-                                    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-                                </svg>
-                                <span class="text-[10px] text-white/80 font-light">Maks. {{ $setting->max_guest }} Orang per undangan</span>
-                            </div>
-                            @endif
-                        </div>
-                    </div>
-
-                    <!-- Message -->
-                    <p class="text-xs font-['Montserrat'] font-light leading-relaxed text-white/50 max-w-xs mx-auto">
-                        Tanpa mengurangi rasa hormat, kami mengundang Bapak/Ibu/Saudara/i untuk menghadiri hari istimewa kami.
-                    </p>
-
-                    <!-- Opening Button -->
-                    <button type="button" id="openInvitation" class="group relative px-8 py-3.5 rounded-full overflow-hidden transition-all duration-500 hover:scale-105 active:scale-95 mx-auto">
-                        <div class="absolute inset-0 bg-gradient-to-r from-(--primary-color) to-(--secondary-color) opacity-90"></div>
-                        <div class="absolute inset-0 bg-gradient-to-r from-(--primary-color) to-(--secondary-color) blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-500"></div>
-                        <div class="absolute inset-0.5 rounded-full bg-white/10 backdrop-blur-sm"></div>
-                        <span class="relative flex items-center justify-center gap-3 text-white font-['Montserrat'] text-xs font-medium uppercase tracking-[0.2em]">
-                            <span>Buka Undangan</span>
-                            <svg class="w-4 h-4 transition-transform duration-300 group-hover:translate-y-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                                <path d="M19 14l-7 7-7-7M12 21V3"/>
-                            </svg>
-                        </span>
-                    </button>
-                </div>
-
-                <!-- Decorative bottom line -->
-                <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+<!-- Additional Floating Hearts - scattered -->
+<div class="absolute top-20 left-1/2 -translate-x-1/2 z-20 flex gap-12 animate-float">
+    <svg class="w-8 h-8 md:w-10 md:h-10 text-blue-500 opacity-40" style="animation-delay: 0.5s;" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+    </svg>
+    <svg class="w-6 h-6 md:w-8 md:h-8 text-blue-400 opacity-35" style="animation-delay: 1.2s;" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+    </svg>
+</div>
+   
+    <div class="flex flex-col items-center justify-end p-4 py-6 md:py-8 absolute z-10 bottom-0 left-0 right-0">
+        <div class="relative max-w-md w-full text-center px-6 py-5 md:py-6 rounded-2xl mx-4 shadow-[0_-20px_60px_-20px_rgba(0,0,0,0.8)]" data-aos="zoom-in" data-aos-duration="1400" style="background: {{ $veryLightColor }}; border: 1px solid rgba(66,85,107,0.06);">
+            
+            <!-- Mail/Envelope decoration - top flap -->
+            <div class="absolute -top-[18px] left-1/2 z-[-1] -translate-x-1/2 w-12 h-12 rotate-45 border-t border-l rounded-tl-lg" style="background: {{ $veryLightColor }}; border-color: rgba(66,85,107,0.06);"></div>
+            
+            <!-- Mail seal/stamp -->
+            <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full shadow-lg flex items-center justify-center z-10 border-2" style="background: linear-gradient(135deg, {{ $secondaryColor }}, {{ $primaryColor }}); border-color: rgba(255,255,255,0.5);">
+                <svg class="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 4l16 16M20 4L4 20" stroke-linecap="round"/>
+                    <circle cx="12" cy="12" r="10"/>
+                </svg>
             </div>
+
+            <!-- Mail fold lines decoration -->
+            <div class="absolute top-0 left-0 right-0 h-px" style="background: linear-gradient(to right, transparent, rgba(66,85,107,0.05), transparent);"></div>
+            <div class="absolute bottom-0 left-0 right-0 h-px" style="background: linear-gradient(to right, transparent, rgba(66,85,107,0.05), transparent);"></div>
+
+            <!-- Content with minimal spacing -->
+            <div>
+                <!-- Label -->
+                <div>
+                    <div class="text-xs tracking-[0.35em] font-['system-ui'] font-semibold uppercase" style="color: {{ $secondaryColor }};">The Wedding Of</div>
+                </div>
+
+                <!-- Couple Names -->
+                <h2 class="font-['Great_Vibes'] text-5xl md:text-6xl leading-[1.1] mt-1" style="color: {{ $darkColor }};">
+                    {{ $setting->couple_name }}
+                </h2>
+
+                <!-- Date -->
+                @if($events->first())
+                <div class="text-sm font-['system-ui'] font-medium tracking-[0.1em] mt-1.5" style="color: {{ $darkColor }};">
+                    {{ \Carbon\Carbon::parse($events->first()->date)->translatedFormat('l, d F Y') }}
+                </div>
+                @endif
+
+                <!-- Guest Card - minimal padding -->
+                <div class="relative mt-4 p-2.5 rounded-lg" style="background: {{ $lightColor }}; border: 1px solid rgba(66,85,107,0.05);">
+                    <div class="absolute -top-[15px] left-1/2 -translate-x-1/2 px-2 rounded-full" style="background: {{ $veryLightColor }};">
+                        <span class="text-[8px] tracking-[0.2em] uppercase font-['system-ui'] font-semibold" style="color: {{ $darkColor }}50;">Kepada Yth.</span>
+                    </div>
+
+                    <div>
+                        <div class="text-xl md:text-2xl font-['system-ui'] tracking-wide" style="color: {{ $secondaryColor }};">
+                            {!! $guestName !!}
+                        </div>
+                        @if($setting->max_guest && $setting->max_guest > 0)
+                        <div class="flex items-center justify-center gap-1.5 mt-1">
+                            <svg class="w-3 h-3" style="color: {{ $darkColor }}60;" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                                <circle cx="9" cy="7" r="4" />
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                            </svg>
+                            <span class="text-xs font-['system-ui'] font-medium" style="color: {{ $darkColor }}60;">Maks. {{ $guest->max_person ?? $setting->max_guest }} Orang per undangan</span>
+                        </div>
+                        @endif
+                    </div>
+                </div>
+
+                <!-- Opening Button -->
+                <button type="button" id="openInvitation" class="group relative w-full mt-2.5 px-6 py-2 rounded-full overflow-hidden transition-all duration-500 hover:scale-105 active:scale-95 mx-auto">
+                    <div class="absolute inset-0" style="background: linear-gradient(to right, {{ $primaryColor }}, {{ $secondaryColor }}); opacity: 0.9;"></div>
+                    <div class="absolute inset-0 blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-500" style="background: linear-gradient(to right, {{ $primaryColor }}, {{ $secondaryColor }});"></div>
+                    <div class="absolute inset-0.5 rounded-full bg-white/20 backdrop-blur-sm"></div>
+                    <span class="relative flex items-center justify-center gap-2 text-white font-['system-ui'] text-sm font-normal uppercase tracking-[0.2em]">
+                        <span>Buka Undangan 
+                            </span>
+<svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 fill-white inline-block" viewBox="0 0 512 512" class="ionicon"><path d="M424 80H88a56.06 56.06 0 0 0-56 56v240a56.06 56.06 0 0 0 56 56h336a56.06 56.06 0 0 0 56-56V136a56.06 56.06 0 0 0-56-56m-14.18 92.63-144 112a16 16 0 0 1-19.64 0l-144-112a16 16 0 1 1 19.64-25.26L256 251.73l134.18-104.36a16 16 0 0 1 19.64 25.26"/></svg></span>
+                </button>
+            </div>
+
+            <!-- Decorative envelope bottom flap -->
+            <div class="absolute -bottom-[14px] left-1/2 -translate-x-1/2 w-20 h-5 border-b border-r border-l rounded-b-lg" style="background: {{ $veryLightColor }}; border-color: rgba(66,85,107,0.06);"></div>
         </div>
+
+        <!-- Decorative bottom line -->
+        <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5">
+            <div class="w-1.5 h-1.5 rounded-full" style="background: {{ $darkColor }}10;"></div>
+            <div class="w-1.5 h-1.5 rounded-full" style="background: {{ $darkColor }}15;"></div>
+            <div class="w-1.5 h-1.5 rounded-full" style="background: {{ $darkColor }}20;"></div>
+        </div>
+    </div>
+</div>
     </div>
 
     <!-- Main Content Container -->
@@ -727,41 +821,125 @@
         <section id="home" class="relative min-height-[100vh] min-h-screen flex items-end justify-center bg-cover bg-center overflow-hidden" 
                  style="background-image: url('{{ $setting->hero_image_url }}');">
             
-            @if($decor_falling_petal)
-            <div class="petal-container" id="heroPetals"></div>
-            @endif
+                    @if($decor_falling_petal)
+                    <div class="petal-container" id="heroPetals"></div>
+                    @endif
 
-            <div class="relative max-w-2xl w-full text-center text-white px-5 py-8 md:py-10 rounded-2xl backdrop-blur-md bg-[rgba(var(--dark-rgb),0.25)] border border-white/10 shadow-[0_20px_50px_-10px_rgba(0,0,0,0.4)] mx-3 z-10 mb-8" data-aos="fade-up" data-aos-duration="1200">
-    <span class="text-[8px] tracking-[0.35em] uppercase block mb-3 text-(--accent-color)/80 font-['Montserrat'] font-medium">Undangan Pernikahan</span>
-    
-    <h1 class="font-['Great_Vibes'] text-5xl md:text-6xl lg:text-7xl leading-[1.1] drop-shadow-[0_2px_15px_rgba(0,0,0,0.3)]">
-        {{ $setting->couple_name }}
-    </h1>
-    
-    <div class="flex items-center justify-center gap-3 my-4">
-        <div class="w-10 h-px bg-gradient-to-r from-transparent to-white/20"></div>
-        <svg class="w-3 h-3 text-(--accent-color)/60" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-        </svg>
-        <div class="w-10 h-px bg-gradient-to-l from-transparent to-white/20"></div>
-    </div>
+                    <div
+                        class="relative max-w-lg w-full text-center text-white px-4 py-5 rounded-2xl bg-[rgba(var(--dark-rgb),0.35)] border border-white/15 shadow-[0_12px_35px_-10px_rgba(0,0,0,0.35)] mx-3 z-10 mb-5"
+                        data-aos="fade-up"
+                        data-aos-duration="1200"
+                    >
+                        <!-- Love Decoration -->
+                        <div class="absolute -top-4 left-1/2 -translate-x-1/2">
+                            <div class="w-8 h-8 rounded-full bg-white/95 shadow-md flex items-center justify-center">
+                                <svg
+                                    class="w-4 h-4 text-white fill-blue-500"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path d="M12 21s-7-4.35-9.5-8.5C.5 9.17 2.35 5 6.5 5c2.04 0 3.55 1.13 4.5 2.5C11.95 6.13 13.46 5 15.5 5 19.65 5 21.5 9.17 21.5 12.5 19 16.65 12 21 12 21z"/>
+                                </svg>
+                            </div>
+                        </div>
 
-    @if ($setting->invitation_text_with_guest)
-        <div class="text-xs md:text-sm font-light leading-relaxed max-w-xl mx-auto mb-6 text-white/80 font-['Montserrat']">
-            {!! $setting->invitation_text_with_guest !!}
-        </div>
-    @else
-        <div class="text-xs md:text-sm font-light leading-relaxed max-w-xl mx-auto mb-6 text-white/80 font-['Montserrat']">
-            Kepada Yth. Bapak/Ibu/Saudara/i: <br> Tamu Undangan
-        </div>
-    @endif
-    
-    <div class="animate-bounce mt-4">
-        <svg class="w-4 h-4 mx-auto text-(--accent-color)/60" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-            <path d="M19 14l-7 7-7-7M12 21V3"/>
-        </svg>
-    </div>
-</div>
+                        <span class="text-[7px] tracking-[0.3em] uppercase block mb-1 mt-1 text-white/80 font-['Montserrat'] font-medium">
+                            Undangan Pernikahan
+                        </span>
+
+                        <!-- Couple Name -->
+                        <h1 class="font-['Great_Vibes'] text-4xl md:text-5xl leading-none drop-shadow-[0_2px_10px_rgba(0,0,0,0.3)]">
+                            {{ $setting->couple_name }}
+                        </h1>
+
+                        @if($events->first())
+                            @php
+                                $event = $events->first();
+
+                                $eventDate = \Carbon\Carbon::parse($event->date);
+                                $startTime = \Carbon\Carbon::parse($event->time_start);
+
+                                $endTime = $event->time_end
+                                    ? \Carbon\Carbon::parse($event->time_end)
+                                    : $startTime->copy()->addHours(2);
+
+                                $startDateTime = $eventDate->format('Ymd') . 'T' . $startTime->format('His');
+                                $endDateTime = $eventDate->format('Ymd') . 'T' . $endTime->format('His');
+
+                                $formattedDate = $eventDate->translatedFormat('l, d F Y');
+                                $formattedTime = $startTime->format('H:i');
+                            @endphp
+
+                            <!-- Date & Time -->
+                            <div class="flex items-center justify-center gap-2 mt-2 text-[10px] md:text-xs font-['Montserrat'] text-white">
+                                <span>{{ $formattedDate }}</span>
+                                <span class="text-white/50">•</span>
+                                <span>{{ $formattedTime }} WIB</span>
+                            </div>
+
+                            <!-- Countdown -->
+                            <div
+                                class="mt-5"
+                                data-aos="zoom-in"
+                                data-aos-duration="1000"
+                            >
+                                <div class="flex items-center justify-center gap-2 mb-2">
+                                    <span class="w-6 h-px bg-white/40"></span>
+
+                                    <h3 class="text-base md:text-lg font-great text-white">
+                                        Menuju Hari Bahagia
+                                    </h3>
+
+                                    <span class="w-6 h-px bg-white/40"></span>
+                                </div>
+
+                                <div class="flex justify-center gap-1.5 md:gap-2 c-countdown">
+                                    <div class="w-14 md:w-16 bg-gradient-custom text-white rounded-lg py-1.5 px-1 shadow-sm">
+                                        <span class="text-lg md:text-xl font-bold block leading-tight c-days">0</span>
+                                        <span class="text-[7px] uppercase tracking-wider text-white/75">Hari</span>
+                                    </div>
+
+                                    <div class="w-14 md:w-16 bg-gradient-custom text-white rounded-lg py-1.5 px-1 shadow-sm">
+                                        <span class="text-lg md:text-xl font-bold block leading-tight c-hours">0</span>
+                                        <span class="text-[7px] uppercase tracking-wider text-white/75">Jam</span>
+                                    </div>
+
+                                    <div class="w-14 md:w-16 bg-gradient-custom text-white rounded-lg py-1.5 px-1 shadow-sm">
+                                        <span class="text-lg md:text-xl font-bold block leading-tight c-minutes">0</span>
+                                        <span class="text-[7px] uppercase tracking-wider text-white/75">Menit</span>
+                                    </div>
+
+                                    <div class="w-14 md:w-16 bg-gradient-custom text-white rounded-lg py-1.5 px-1 shadow-sm">
+                                        <span class="text-lg md:text-xl font-bold block leading-tight c-seconds">0</span>
+                                        <span class="text-[7px] uppercase tracking-wider text-white/75">Detik</span>
+                                    </div>
+                                </div>
+
+                                <!-- Calendar -->
+                                <div class="mt-3">
+                                    <a
+                                        href="https://www.google.com/calendar/render?action=TEMPLATE&text={{ urlencode($setting->couple_name . ' - Pernikahan') }}&dates={{ $startDateTime }}/{{ $endDateTime }}&details={{ urlencode(strip_tags($setting->invitation_text_with_guest)) }}&location={{ urlencode($event->location_name . ', ' . $event->address) }}&sf=true&output=xml"
+                                        target="_blank"
+                                        class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-primary-custom text-primary-custom rounded-full text-[10px] font-medium shadow-sm hover:scale-[1.02] active:scale-95 transition-all duration-300"
+                                    >
+                                        <svg
+                                            class="w-3.5 h-3.5"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="1.8"
+                                        >
+                                            <rect x="3" y="4" width="18" height="18" rx="2"/>
+                                            <line x1="16" y1="2" x2="16" y2="6"/>
+                                            <line x1="8" y1="2" x2="8" y2="6"/>
+                                            <line x1="3" y1="10" x2="21" y2="10"/>
+                                        </svg>
+
+                                        <span>Simpan ke Kalender</span>
+                                    </a>
+                                </div>
+                            </div>
+                        @endif
+                    </div>
         </section>
 
         @if($isVideo)
@@ -820,12 +998,12 @@
                     <div class="w-20 h-1 bg-primary-custom mx-auto"></div>
                 </div>
                 
-                <div class="grid md:grid-cols-2 gap-12 lg:gap-16 px-4">
+                <div class="grid   @if ($couple_and_decor) md:grid-cols-3 @else md:grid-cols-2 @endif gap-12 lg:gap-16 px-4">
                     <div class="text-center md:pb-0" data-aos="fade-right" data-aos-duration="1200">
                         <div class="relative inline-block mb-8">
                             @if($setting->groom_photo)
                                 <img src="{{ $setting->groom_photo_url }}" alt="{{ $setting->groom_fullname }}" 
-                                     class="couple-photo relative z-10 hover:scale-[1.03] transition-transform duration-500 rounded-[30px] w-80">
+                                     class="couple-photo relative border-4 shadow-xl border-white z-10 hover:scale-[1.03] transition-transform duration-500 rounded-[30px] w-80">
                             @else
                                 <div class="couple-photo bg-gradient-custom flex items-center justify-center relative z-10 rounded-[30px]">
                                     <span class="text-7xl text-white font-great">{{ substr($setting->groom_nickname ?? 'G', 0, 1) }}</span>
@@ -849,11 +1027,15 @@
                         @endif
                     </div>
 
+                    @if ($couple_and_decor)
+                        <img class="w-32 h-32 md:mt-24 mx-auto" data-aos="zoom-out-up" src="{{ $couple_and_decor }}" alt="Decor Bottom Right" loading="lazy">
+                    @endif
+
                     <div class="text-center" data-aos="fade-left" data-aos-duration="1200">
                         <div class="relative inline-block mb-8">
                             @if($setting->bride_photo)
                                 <img src="{{ $setting->bride_photo_url }}" alt="{{ $setting->bride_fullname }}" 
-                                     class="couple-photo relative z-10 hover:scale-[1.03] transition-transform duration-500 rounded-[30px] w-80">
+                                     class="couple-photo relative border-4 shadow-xl border-white z-10 hover:scale-[1.03] transition-transform duration-500 rounded-[30px] w-80">
                             @else
                                 <div class="couple-photo bg-gradient-custom flex items-center justify-center relative z-10 rounded-[30px]">
                                     <span class="text-7xl text-white font-great">{{ substr($setting->bride_nickname ?? 'B', 0, 1) }}</span>
@@ -1019,21 +1201,21 @@
                     <div class="mt-20 text-center" data-aos="zoom-in" data-aos-duration="1000">
                         <h3 class="text-2xl font-great text-gray-800 mb-6">Menuju Hari Bahagia</h3>
                         
-                        <div class="flex justify-center flex-wrap gap-4 mb-10 px-4" id="countdown">
+                        <div class="flex justify-center flex-wrap gap-4 mb-10 px-4 c-countdown" >
                             <div class="min-w-18.75 md:min-w-22.5 bg-gradient-custom text-white rounded-2xl p-3 md:p-4 shadow-md">
-                                <span class="text-2xl md:text-4xl font-bold block" id="days">0</span>
+                                <span class="text-2xl md:text-4xl font-bold block c-days" >0</span>
                                 <span class="text-[10px] uppercase tracking-widest text-white/80">Hari</span>
                             </div>
                             <div class="min-w-18.75 md:min-w-22.5 bg-gradient-custom text-white rounded-2xl p-3 md:p-4 shadow-md">
-                                <span class="text-2xl md:text-4xl font-bold block" id="hours">0</span>
+                                <span class="text-2xl md:text-4xl font-bold block c-hours" >0</span>
                                 <span class="text-[10px] uppercase tracking-widest text-white/80">Jam</span>
                             </div>
                             <div class="min-w-18.75 md:min-w-22.5 bg-gradient-custom text-white rounded-2xl p-3 md:p-4 shadow-md">
-                                <span class="text-2xl md:text-4xl font-bold block" id="minutes">0</span>
+                                <span class="text-2xl md:text-4xl font-bold block c-minutes" >0</span>
                                 <span class="text-[10px] uppercase tracking-widest text-white/80">Menit</span>
                             </div>
                             <div class="min-w-18.75 md:min-w-22.5 bg-gradient-custom text-white rounded-2xl p-3 md:p-4 shadow-md">
-                                <span class="text-2xl md:text-4xl font-bold block" id="seconds">0</span>
+                                <span class="text-2xl md:text-4xl font-bold block c-seconds" >0</span>
                                 <span class="text-[10px] uppercase tracking-widest text-white/80">Detik</span>
                             </div>
                         </div>
@@ -1267,128 +1449,163 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <script>
-        $(document).ready(function() {
+        document.addEventListener('DOMContentLoaded', function() {
             AOS.init({
                 duration: 1000,
-                once: true,
+                /* once: true, */
                 offset: 80,
                 easing: 'ease-in-out'
             });
 
-            // Optimized loading with actual resource tracking
             function optimizedLoading() {
-                const loadingBar = $('#loadingBar');
-                const loadingOverlay = $('#loadingOverlay');
-                const startTime = Date.now();
-                const minDuration = 1200;
-                const maxDuration = 5000;
+                if (window._loadingInitialized) {
+                    return;
+                }
+
+                window._loadingInitialized = true;
+
+                const loadingBar = document.getElementById('loadingBar');
+                const loadingOverlay = document.getElementById('loadingOverlay');
+                const loadingPercentage = document.getElementById('loadingPercentage');
                 
-                let resourcesLoaded = 0;
-                let totalResources = 0;
+                // Check if elements exist
+                if (!loadingOverlay) {
+                    console.warn('Loading overlay not found');
+                    return;
+                }
+
+                // Check if already hidden
+                if (loadingOverlay.classList.contains('hidden')) {
+                    return;
+                }
+
+                const maxDuration = 5000;
+                let totalBackgroundImages = 0;
+                let loadedBackgroundImages = 0;
                 let isComplete = false;
                 
-                // Count all resources
-                function countResources() {
-                    const images = document.querySelectorAll('img');
-                    const bgImages = document.querySelectorAll('[style*="background-image"]');
-                    const fonts = document.querySelectorAll('link[rel="stylesheet"]');
-                    const scripts = document.querySelectorAll('script[src]');
-                    
-                    totalResources = images.length + bgImages.length + fonts.length + scripts.length + 10; // Buffer
+                // Get all elements with background-image
+                function getBackgroundImageElements() {
+                    const elements = [];
+                    const allElements = document.querySelectorAll('*');
+                    for (let i = 0; i < allElements.length; i++) {
+                        const el = allElements[i];
+                        const style = getComputedStyle(el);
+                        const bgImage = style.backgroundImage;
+                        if (bgImage && bgImage !== 'none' && bgImage !== '') {
+                            elements.push(el);
+                        }
+                    }
+                    return elements;
                 }
                 
-                // Track progress with weighted scoring
-                function calculateProgress() {
-                    const images = document.querySelectorAll('img');
-                    let loadedImages = 0;
-                    images.forEach(img => {
-                        if (img.complete && img.naturalHeight > 0) loadedImages++;
+                // Extract URL from background-image style
+                function getBackgroundUrl(el) {
+                    const style = getComputedStyle(el);
+                    const bgImage = style.backgroundImage;
+                    const match = bgImage.match(/url\(['"]?(.*?)['"]?\)/i);
+                    return match ? match[1] : null;
+                }
+                
+                // Track background images
+                function trackBackgroundImages() {
+                    const elements = getBackgroundImageElements();
+                    const uniqueUrls = new Set();
+                    
+                    for (let i = 0; i < elements.length; i++) {
+                        const url = getBackgroundUrl(elements[i]);
+                        if (url && url !== 'none' && !url.startsWith('data:')) {
+                            uniqueUrls.add(url);
+                        }
+                    }
+                    
+                    totalBackgroundImages = uniqueUrls.size;
+                    
+                    if (totalBackgroundImages === 0) {
+                        // No background images to load, complete immediately
+                        completeLoading();
+                        return;
+                    }
+                    
+                    // Load each unique background image
+                    uniqueUrls.forEach(function(url) {
+                        const img = new Image();
+                        img.onload = function() {
+                            loadedBackgroundImages++;
+                            checkProgress();
+                        };
+                        img.onerror = function() {
+                            loadedBackgroundImages++;
+                            checkProgress();
+                        };
+                        img.src = url;
+                        
+                        // Handle case where image is already cached
+                        if (img.complete && img.naturalHeight > 0) {
+                            loadedBackgroundImages++;
+                            checkProgress();
+                        }
                     });
-                    
-                    // 60% from images, 30% from time, 10% from other resources
-                    const imageScore = images.length > 0 ? (loadedImages / images.length) * 60 : 60;
-                    const timeScore = Math.min(((Date.now() - startTime) / maxDuration) * 30, 30);
-                    const resourceScore = Math.min((resourcesLoaded / totalResources) * 10, 10);
-                    
-                    return Math.min(imageScore + timeScore + resourceScore, 100);
                 }
                 
-                // Update progress bar
-                function updateProgress() {
+                function calculateProgress() {
+                    if (totalBackgroundImages === 0) return 100;
+                    const progress = (loadedBackgroundImages / totalBackgroundImages) * 100;
+                    return Math.min(progress, 100);
+                }
+                
+                function checkProgress() {
                     if (isComplete) return;
                     
                     const progress = calculateProgress();
-                    loadingBar.css('width', progress + '%');
+                    updateProgress(progress);
                     
-                    if (progress >= 100) {
-                        isComplete = true;
-                        loadingBar.css('width', '100%');
-                        setTimeout(() => {
-                            loadingOverlay.addClass('hidden');
-                        }, 400);
-                    } else {
-                        requestAnimationFrame(updateProgress);
+                    if (progress >= 100 && loadedBackgroundImages >= totalBackgroundImages) {
+                        completeLoading();
                     }
                 }
                 
-                // Track resource loads
-                function trackResource() {
-                    resourcesLoaded++;
+                function updateProgress(progress) {
+                    if (loadingBar) {
+                        loadingBar.style.width = Math.min(progress, 100) + '%';
+                    }
+                    if (loadingPercentage) {
+                        loadingPercentage.textContent = Math.min(Math.round(progress), 100) + '%';
+                    }
                 }
                 
-                // Track all images
-                document.querySelectorAll('img').forEach(img => {
-                    if (img.complete && img.naturalHeight > 0) {
-                        trackResource();
-                    } else {
-                        img.addEventListener('load', trackResource);
-                        img.addEventListener('error', trackResource);
-                    }
-                });
+                function completeLoading() {
+                    if (isComplete) return;
+                    isComplete = true;
+                    
+                    updateProgress(100);
+                    
+                    loadingOverlay.style.transition = 'opacity 0.5s ease';
+                    loadingOverlay.style.opacity = '0';
+                    loadingOverlay.style.display = 'none';
+                }
                 
-                // Track background images
-                document.querySelectorAll('[style*="background-image"]').forEach(el => {
-                    const bgUrl = getComputedStyle(el).backgroundImage.replace(/url\(['"]?(.*?)['"]?\)/i, '$1');
-                    if (bgUrl && bgUrl !== 'none') {
-                        const img = new Image();
-                        img.onload = trackResource;
-                        img.onerror = trackResource;
-                        img.src = bgUrl;
-                    }
-                });
+                // Start tracking background images
+                trackBackgroundImages();
                 
-                // Track fonts and styles
-                document.querySelectorAll('link[rel="stylesheet"]').forEach(el => {
-                    el.addEventListener('load', trackResource);
-                    el.addEventListener('error', trackResource);
-                });
-                
-                // Track scripts
-                document.querySelectorAll('script[src]').forEach(el => {
-                    el.addEventListener('load', trackResource);
-                    el.addEventListener('error', trackResource);
-                });
-                
-                // Count initial resources
-                countResources();
-                
-                // Start the loading animation
-                requestAnimationFrame(updateProgress);
-                
-                // Force complete after max duration
-                setTimeout(() => {
-                    if (!loadingOverlay.hasClass('hidden')) {
-                        isComplete = true;
-                        loadingBar.css('width', '100%');
-                        setTimeout(() => {
-                            loadingOverlay.addClass('hidden');
-                        }, 300);
+                // Set timeout to force complete after max duration
+                setTimeout(function() {
+                    if (!isComplete) {
+                        console.log('Loading timed out, forcing completion');
+                        completeLoading();
                     }
                 }, maxDuration);
             }
-            
-            // Start optimized loading
+
+            // Initialize loading when DOM is ready
+            document.addEventListener('DOMContentLoaded', function() {
+                // Small delay to ensure all elements are rendered
+                setTimeout(function() {
+                    optimizedLoading();
+                }, 100);
+            });
             optimizedLoading();
+
 
             @if($decor_falling_petal)
             function generateFallingPetals() {
@@ -1443,7 +1660,7 @@
                 
                 setTimeout(() => {
                     AOS.refresh();
-                }, 100);
+                }, 200);
             });
 
             const audio = document.getElementById('bgMusic');
@@ -1481,10 +1698,10 @@
 
                         if (gap < 0) {
                             clearInterval(tracker);
-                            $('#days').text('0');
-                            $('#hours').text('0');
-                            $('#minutes').text('0');
-                            $('#seconds').text('0');
+                            $('.c-days').text('0');
+                            $('.c-hours').text('0');
+                            $('.c-minutes').text('0');
+                            $('.c-seconds').text('0');
                             return;
                         }
 
@@ -1493,10 +1710,10 @@
                         const m = Math.floor((gap % (1000 * 60 * 60)) / (1000 * 60));
                         const s = Math.floor((gap % (1000 * 60)) / 1000);
 
-                        $('#days').text(d);
-                        $('#hours').text(h);
-                        $('#minutes').text(m);
-                        $('#seconds').text(s);
+                        $('.c-days').text(d);
+                        $('.c-hours').text(h);
+                        $('.c-minutes').text(m);
+                        $('.c-seconds').text(s);
                     }, 1000);
                 }
                 startWeddingCountdown();

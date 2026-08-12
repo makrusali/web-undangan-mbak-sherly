@@ -70,6 +70,7 @@ class ThemeSettingController extends Controller
             'decor_bottom_left_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'decor_bottom_right_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'decor_falling_petal_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
+            'couple_and_decor' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
             'bg_mask_alpha' => 'nullable|numeric|min:0|max:1',
             'hero_mask_alpha' => 'nullable|numeric|min:0|max:1',
         ]);
@@ -86,7 +87,8 @@ class ThemeSettingController extends Controller
             'decor_top_right_image',
             'decor_bottom_left_image',
             'decor_bottom_right_image',
-            'decor_falling_petal_image'
+            'decor_falling_petal_image',
+            'couple_and_decor'
         ];
 
         // Handle background image/video separately
@@ -282,6 +284,26 @@ class ThemeSettingController extends Controller
         return response()->json([
             'success' => false,
             'message' => 'No decor falling petal image found to delete'
+        ], 404);
+    }
+
+    public function deleteCoupleAndDecor(Request $request)
+    {
+        $setting = ThemeSetting::first();
+        if ($setting && $setting->couple_and_decor) {
+            Storage::disk('public')->delete($setting->couple_and_decor);
+            $setting->couple_and_decor = null;
+            $setting->save();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Couple And Decor image deleted successfully'
+            ]);
+        }
+
+        return response()->json([
+            'success' => false,
+            'message' => 'No Couple And Decor image found to delete'
         ], 404);
     }
 }

@@ -234,6 +234,7 @@
                                 <th scope="col" class="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">#</th>
                                 <th scope="col" class="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">Name</th>
                                 <th scope="col" class="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">Phone</th>
+                                <th scope="col" class="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">Max Person</th>
                                 <th scope="col" class="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">Address</th>
                                 <th scope="col" class="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">Created At</th>
                                 <th scope="col" class="px-4 py-3 font-normal text-gray-500 text-start text-theme-sm dark:text-gray-400">WhatsApp</th>
@@ -265,6 +266,11 @@
                                     <td class="px-4 py-4 whitespace-nowrap">
                                         <div class="text-sm text-gray-500 dark:text-gray-400">
                                             {{ $guest->phone ?? 'N/A' }}
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-4 whitespace-nowrap">
+                                        <div class="text-sm text-gray-500 dark:text-gray-400">
+                                            {{ $guest->max_person ?? 'default: (' . $setting->max_guest  . ')' }}
                                         </div>
                                     </td>
                                     <td class="px-4 py-4 whitespace-nowrap">

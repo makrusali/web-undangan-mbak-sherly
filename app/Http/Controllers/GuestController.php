@@ -31,7 +31,6 @@ class GuestController extends Controller
         $setting = InvitationSetting::first();
 
         // Get max_guest from settings
-        $maxGuest = $setting ? $setting->max_guest : null;
 
         // Get wedding events
         $events = WeddingEvent::where('is_active', true)
@@ -41,6 +40,8 @@ class GuestController extends Controller
 
         // Process message template for each guest
         foreach ($guests as $guest) {
+            $maxGuest = $guest->max_person ? $guest->max_person : $setting->max_guest ?? null;
+
             if ($setting && $setting->message_template) {
                 // Get raw HTML from Quill
                 $html = $setting->message_template;
@@ -188,7 +189,8 @@ class GuestController extends Controller
 
     public function show(Guest $guest)
     {
-        return view('pages.guests.show', compact('guest'));
+        $setting = InvitationSetting::first();
+        return view('pages.guests.show', compact('guest', 'setting'));
     }
 
     /**

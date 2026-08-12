@@ -323,6 +323,28 @@
                             class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:file:bg-brand-500/10 dark:file:text-brand-400"
                         />
                     </div>
+
+                     <div>
+                        <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                            Couple & Decor
+                        </label>
+                        @if($setting && $setting->couple_and_decor)
+                            <div class="mb-3 relative inline-block">
+                                <img src="{{ Storage::url($setting->couple_and_decor) }}" class="w-32 h-32 object-cover rounded-lg border border-gray-200">
+                                <button type="button" onclick="deleteImage('couple_and_decor')" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        @endif
+                        <input 
+                            type="file" 
+                            name="couple_and_decor"
+                            accept="image/jpeg,image/png,image/jpg,image/gif,image/webp"
+                            class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:file:bg-brand-500/10 dark:file:text-brand-400"
+                        />
+                    </div>
                 </div>
             </div>
 
@@ -481,6 +503,10 @@
             case 'decor_falling_petal':
                 url = '{{ route("panel.theme-settings.delete-decor-falling-petal") }}';
                 break;
+            case 'couple_and_decor':
+                url = '{{ route("panel.theme-settings.delete-couple-and-decor") }}';
+                break;
+
         }
         
         fetch(url, {

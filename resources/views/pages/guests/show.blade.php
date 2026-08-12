@@ -43,6 +43,11 @@
                 <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Full Name</label>
                 <p class="mt-1 text-base text-gray-900 dark:text-white">{{ $guest->name ?? 'N/A' }}</p>
             </div>
+           
+            <div>
+                <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Max Person</label>
+                <p class="mt-1 text-base text-gray-900 dark:text-white"> {{ $guest->max_person ?? 'default: (' . $setting->max_guest  . ')' }}</p>
+            </div>
 
             <!-- Phone Detail -->
             <div>

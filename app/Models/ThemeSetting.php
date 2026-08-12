@@ -22,6 +22,7 @@ class ThemeSetting extends Model
         'decor_falling_petal_image',
         'bg_mask_alpha',
         'hero_mask_alpha',
+        'couple_and_decor'
     ];
 
     /**

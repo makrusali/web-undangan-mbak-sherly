@@ -10,5 +10,6 @@ class Guest extends Model
         'name',
         'phone',
         'address',
+        'max_person',
     ];
 }
