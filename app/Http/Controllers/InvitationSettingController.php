@@ -38,14 +38,14 @@ class InvitationSettingController extends Controller
             // Groom Info
             'groom_nickname' => 'nullable|string|max:255',
             'groom_fullname' => 'nullable|string|max:255',
-            'groom_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
+            'groom_photo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
             'groom_parents' => 'nullable|string|max:500',
             'groom_instagram' => 'nullable|string|max:255',
 
             // Bride Info
             'bride_nickname' => 'nullable|string|max:255',
             'bride_fullname' => 'nullable|string|max:255',
-            'bride_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
+            'bride_photo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
             'bride_parents' => 'nullable|string|max:500',
             'bride_instagram' => 'nullable|string|max:255',
 
@@ -54,7 +54,7 @@ class InvitationSettingController extends Controller
             'thanks_message' => 'nullable|string',
 
             // Couple Photo
-            'couple_photo' => 'nullable|image|mimes:jpeg,png,jpg|max:5120',
+            'couple_photo' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:5120',
 
             // Song/Audio
             'song_file' => 'nullable|max:10240',
