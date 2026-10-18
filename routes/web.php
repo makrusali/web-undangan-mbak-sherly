@@ -53,6 +53,8 @@ Route::middleware(AuthMiddleware::class)->prefix("panel")->name('panel.')->group
     Route::get('invitation-settings', [InvitationSettingController::class, 'index'])->name('invitation-settings.index');
     Route::put('invitation-settings', [InvitationSettingController::class, 'update'])->name('invitation-settings.update');
     Route::delete('invitation-settings/delete-hero', [InvitationSettingController::class, 'deleteHeroImage'])->name('invitation-settings.delete-hero');
+    Route::delete('invitation-settings/delete-cover', [InvitationSettingController::class, 'deleteCoverImage'])->name('invitation-settings.delete-cover');
+
     Route::delete('invitation-settings/delete-groom', [InvitationSettingController::class, 'deleteGroomPhoto'])->name('invitation-settings.delete-groom');
     Route::delete('invitation-settings/delete-bride', [InvitationSettingController::class, 'deleteBridePhoto'])->name('invitation-settings.delete-bride');
     Route::delete('invitation-settings/delete-couple', [InvitationSettingController::class, 'deleteCouplePhoto'])->name('invitation-settings.delete-couple');

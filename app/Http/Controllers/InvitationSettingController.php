@@ -29,9 +29,11 @@ class InvitationSettingController extends Controller
         $validator = Validator::make($request->all(), [
             // Hero Image
             'hero_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+            'cover_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
 
             // Texts
             'invitation_text' => 'nullable|string',
+            'dua_text' => 'nullable|string',
             'message_template' => 'nullable|string|max:1000',
             'max_guest' => 'required|integer|min:1|max:10',
 
@@ -82,6 +84,7 @@ class InvitationSettingController extends Controller
 
         $data = $request->except([
             'hero_image',
+            'cover_image',
             'groom_photo',
             'bride_photo',
             'couple_photo',
@@ -95,6 +98,14 @@ class InvitationSettingController extends Controller
                 Storage::disk('public')->delete($setting->hero_image);
             }
             $data['hero_image'] = $request->file('hero_image')->store('invitations/hero', 'public');
+        }
+
+        if ($request->hasFile('cover_image')) {
+            // Delete old file
+            if ($setting->cover_image) {
+                Storage::disk('public')->delete($setting->cover_image);
+            }
+            $data['cover_image'] = $request->file('cover_image')->store('invitations/hero', 'public');
         }
 
         if ($request->hasFile('groom_photo')) {
@@ -150,6 +161,19 @@ class InvitationSettingController extends Controller
             $setting->save();
 
             return response()->json(['success' => true, 'message' => 'Hero image deleted successfully']);
+        }
+        return response()->json(['success' => false, 'message' => 'Image not found'], 404);
+    }
+
+    public function deleteCoverImage()
+    {
+        $setting = InvitationSetting::first();
+        if ($setting && $setting->cover_image) {
+            Storage::disk('public')->delete($setting->cover_image);
+            $setting->cover_image = null;
+            $setting->save();
+
+            return response()->json(['success' => true, 'message' => 'Cover image deleted successfully']);
         }
         return response()->json(['success' => false, 'message' => 'Image not found'], 404);
     }

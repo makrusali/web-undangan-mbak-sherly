@@ -66,6 +66,12 @@
         as="image"
         href="{{ $setting->hero_image_url }}"
     >
+
+    <link
+        rel="preload"
+        as="image"
+        href="{{ $setting->cover_image_url }}"
+    >
     
     <link
         rel="preload"
@@ -190,7 +196,7 @@
             left: 0;
             width: 100dvw;
             height: 100dvh;
-            background: linear-gradient(135deg, rgba(var(--dark-rgb), 0.2), rgba(var(--primary-rgb), 0.25)), url('{{ $setting->hero_image_url }}');
+            background: linear-gradient(135deg, rgba(var(--dark-rgb), 0.2), rgba(var(--primary-rgb), 0.25)), url('{{ $setting->cover_image_url }}');
             background-size: cover;
             background-position: center;
             z-index: 15000;
@@ -1000,6 +1006,40 @@
                 </div>
                 @endif
             </div>
+
+            @if($setting->dua_text != null)
+                <section id="dua" class="relative py-24 px-4 overflow-hidden bg-gradient-to-b from-transparent via-primary-custom/5 to-transparent">
+                    <div class="absolute inset-0 pointer-events-none">
+                        <div class="absolute top-10 left-10 w-40 h-40 rounded-full bg-primary-custom/10 blur-3xl"></div>
+                        <div class="absolute bottom-10 right-10 w-52 h-52 rounded-full bg-primary-custom/10 blur-3xl"></div>
+                    </div>
+                    <div class="max-w-3xl mx-auto w-full relative z-10">
+                        <div class="relative" data-aos="fade-up" data-aos-duration="1200">
+                            <div class="relative bg-white/80 backdrop-blur-sm border border-primary-custom/20 rounded-[30px] shadow-xl shadow-primary-custom/10 px-8 py-12 md:px-14 md:py-16">
+                                <div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">
+                                    <div class="w-14 h-14 rounded-full bg-gradient-custom flex items-center justify-center shadow-lg">
+                                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <div class="dua-text-content text-center text-gray-700 leading-relaxed text-base md:text-lg font-playfair">
+                                    {!! $setting->dua_text !!}
+                                </div>
+
+                                <div class="mt-8 flex items-center justify-center gap-3">
+                                    <div class="h-px w-12 bg-primary-custom/40"></div>
+                                    <svg class="w-5 h-5 text-primary-custom" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M12 2l2.4 7.4H22l-6 4.6 2.3 7.4-6.3-4.6L5.7 21.4 8 14 2 9.4h7.6z"/>
+                                    </svg>
+                                    <div class="h-px w-12 bg-primary-custom/40"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            @endif
 
             <!-- COUPLE SECTION -->
             <section id="couple" class="relative py-24 px-4 bg-transparent overflow-hidden">

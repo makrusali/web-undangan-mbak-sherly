@@ -11,6 +11,8 @@ class InvitationSetting extends Model
 
     protected $fillable = [
         'hero_image',
+        'cover_image',
+        'dua_text',
         'invitation_text',
         'message_template',
         'groom_nickname',
@@ -47,6 +49,11 @@ class InvitationSetting extends Model
     public function getHeroImageUrlAttribute()
     {
         return $this->hero_image ? Storage::url($this->hero_image) : null;
+    }
+
+    public function getCoverImageUrlAttribute()
+    {
+        return $this->cover_image ? Storage::url($this->cover_image) : null;
     }
 
     public function getGroomPhotoUrlAttribute()
