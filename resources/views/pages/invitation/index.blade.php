@@ -1122,14 +1122,72 @@
                     <h2 class="font-great text-4xl md:text-5xl lg:text-6xl text-gray-800 mb-4">Cerita Cinta Kami</h2>
                     <div class="w-20 h-1 bg-primary-custom mx-auto"></div>
                 </div>
-                
-                <div class="bg-white/60 backdrop-blur-md p-8 md:p-12 rounded-3xl shadow-xl border border-white/20 prose prose-lg max-w-none text-gray-700 leading-relaxed font-sans" data-aos="zoom-in" data-aos-duration="1200">
-                    {!! $setting->love_story !!}
+
+                @php
+                    $storyBlocks = [];
+                    if ($setting->love_story) {
+                        preg_match_all('/<p><strong>(\d{4})<\/strong><\/p><p>(.*?)<\/p>/s', $setting->love_story, $matches, PREG_SET_ORDER);
+                        foreach ($matches as $match) {
+                            $storyBlocks[] = [
+                                'year' => $match[1],
+                                'content' => $match[2],
+                            ];
+                        }
+                    }
+                @endphp
+
+                <div class="relative">
+                    <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-primary-custom/40 to-transparent -translate-x-1/2"></div>
+
+                    <div class="space-y-8 md:space-y-12">
+                        @forelse($storyBlocks as $index => $block)
+                            <div class="relative md:grid md:grid-cols-2 md:gap-12 items-center"
+                                data-aos="{{ $index % 2 === 0 ? 'fade-right' : 'fade-left' }}"
+                                data-aos-delay="{{ $index * 150 }}"
+                                data-aos-duration="1000">
+                                <div class="hidden md:flex absolute left-1/2 -translate-x-1/2 z-10">
+                                    <div class="w-4 h-4 rounded-full bg-gradient-custom ring-4 ring-white shadow-lg"></div>
+                                </div>
+
+                                @if($index % 2 === 0)
+                                    <div class="bg-white/80 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-xl border border-white/20 hover:shadow-2xl hover:-translate-y-1 transition-all duration-500">
+                                        <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-gradient-custom text-white text-sm font-semibold rounded-full mb-4">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                            </svg>
+                                            <span>{{ $block['year'] }}</span>
+                                        </div>
+                                        <div class="text-gray-700 leading-relaxed text-sm md:text-base">
+                                            {!! $block['content'] !!}
+                                        </div>
+                                    </div>
+                                    <div class="hidden md:block"></div>
+                                @else
+                                    <div class="hidden md:block"></div>
+                                    <div class="bg-white/80 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-xl border border-white/20 hover:shadow-2xl hover:-translate-y-1 transition-all duration-500">
+                                        <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-gradient-custom text-white text-sm font-semibold rounded-full mb-4">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                            </svg>
+                                            <span>{{ $block['year'] }}</span>
+                                        </div>
+                                        <div class="text-gray-700 leading-relaxed text-sm md:text-base">
+                                            {!! $block['content'] !!}
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+                        @empty
+                            <div class="bg-white/60 backdrop-blur-md p-8 md:p-12 rounded-3xl shadow-xl border border-white/20 prose prose-lg max-w-none text-gray-700 leading-relaxed font-sans"
+                                data-aos="zoom-in" data-aos-duration="1200">
+                                {!! $setting->love_story !!}
+                            </div>
+                        @endforelse
+                    </div>
                 </div>
             </div>
         </section>
         @endif
-
         @if($events->count() > 0)
         <section id="events" class="relative py-24 px-4 bg-transparent overflow-hidden">
             <div class="max-w-6xl mx-auto w-full relative z-15">
@@ -1299,18 +1357,35 @@
                     <h2 class="font-great text-4xl md:text-5xl lg:text-6xl text-gray-800 mb-4">Momen Berharga</h2>
                     <div class="w-20 h-1 bg-primary-custom mx-auto"></div>
                 </div>
-                
-                <div class="swiper mySwiper" data-aos="zoom-in" data-aos-duration="1200">
-                    <div class="swiper-wrapper">
-                        @foreach($galleries as $gallery)
-                        <div class="swiper-slide overflow-hidden rounded-3xl">
-                            <img src="{{ $gallery->image_url }}" alt="Gallery Momen" class="rounded-3xl hover:scale-105 transition-transform duration-500">
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-[160px] md:auto-rows-[200px]">
+                    @foreach($galleries as $index => $gallery)
+                        @php
+                            $pattern = $index % 6;
+                            $spanClasses = match($pattern) {
+                                0 => 'col-span-2 row-span-2',
+                                1 => 'col-span-1 row-span-1',
+                                2 => 'col-span-1 row-span-1',
+                                3 => 'col-span-2 row-span-2',
+                                4 => 'col-span-1 row-span-1',
+                                5 => 'col-span-1 row-span-1',
+                                default => 'col-span-1 row-span-1',
+                            };
+                        @endphp
+                        <div class="group relative overflow-hidden rounded-3xl {{ $spanClasses }} shadow-lg"
+                            data-aos="zoom-in"
+                            data-aos-delay="{{ ($index % 8) * 100 }}"
+                            data-aos-duration="800">
+                            <img src="{{ $gallery->image_url }}" alt="Gallery Momen" loading="lazy"
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                            <div class="absolute bottom-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                </svg>
+                            </div>
                         </div>
-                        @endforeach
-                    </div>
-                    <div class="swiper-pagination mt-8"></div>
-                    <div class="swiper-button-next text-primary-custom"></div>
-                    <div class="swiper-button-prev text-primary-custom"></div>
+                    @endforeach
                 </div>
             </div>
         </section>
