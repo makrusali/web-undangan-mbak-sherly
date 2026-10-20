@@ -85,9 +85,6 @@
     <!-- Animate On Scroll (AOS) -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
-    <!-- Swiper CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-
     <!-- jQuery -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
@@ -1113,81 +1110,7 @@
                 </div>
             </div>
         </section>
-
-        @if($setting->love_story && $setting->love_story != "<p><br></p>")
-        <section id="story" class="relative py-24 px-4 bg-transparent overflow-hidden">
-            <div class="max-w-4xl mx-auto relative z-15 px-4">
-                <div class="text-center mb-16" data-aos="fade-up">
-                    <span class="text-primary-custom text-sm tracking-[0.3em] uppercase mb-3 block font-semibold">Love Story</span>
-                    <h2 class="font-great text-4xl md:text-5xl lg:text-6xl text-gray-800 mb-4">Cerita Cinta Kami</h2>
-                    <div class="w-20 h-1 bg-primary-custom mx-auto"></div>
-                </div>
-
-                @php
-                    $storyBlocks = [];
-                    if ($setting->love_story) {
-                        preg_match_all('/<p><strong>(\d{4})<\/strong><\/p><p>(.*?)<\/p>/s', $setting->love_story, $matches, PREG_SET_ORDER);
-                        foreach ($matches as $match) {
-                            $storyBlocks[] = [
-                                'year' => $match[1],
-                                'content' => $match[2],
-                            ];
-                        }
-                    }
-                @endphp
-
-                <div class="relative">
-                    <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-primary-custom/40 to-transparent -translate-x-1/2"></div>
-
-                    <div class="space-y-8 md:space-y-12">
-                        @forelse($storyBlocks as $index => $block)
-                            <div class="relative md:grid md:grid-cols-2 md:gap-12 items-center"
-                                data-aos="{{ $index % 2 === 0 ? 'fade-right' : 'fade-left' }}"
-                                data-aos-delay="{{ $index * 150 }}"
-                                data-aos-duration="1000">
-                                <div class="hidden md:flex absolute left-1/2 -translate-x-1/2 z-10">
-                                    <div class="w-4 h-4 rounded-full bg-gradient-custom ring-4 ring-white shadow-lg"></div>
-                                </div>
-
-                                @if($index % 2 === 0)
-                                    <div class="bg-white/80 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-xl border border-white/20 hover:shadow-2xl hover:-translate-y-1 transition-all duration-500">
-                                        <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-gradient-custom text-white text-sm font-semibold rounded-full mb-4">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                            </svg>
-                                            <span>{{ $block['year'] }}</span>
-                                        </div>
-                                        <div class="text-gray-700 leading-relaxed text-sm md:text-base">
-                                            {!! $block['content'] !!}
-                                        </div>
-                                    </div>
-                                    <div class="hidden md:block"></div>
-                                @else
-                                    <div class="hidden md:block"></div>
-                                    <div class="bg-white/80 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-xl border border-white/20 hover:shadow-2xl hover:-translate-y-1 transition-all duration-500">
-                                        <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-gradient-custom text-white text-sm font-semibold rounded-full mb-4">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                                            </svg>
-                                            <span>{{ $block['year'] }}</span>
-                                        </div>
-                                        <div class="text-gray-700 leading-relaxed text-sm md:text-base">
-                                            {!! $block['content'] !!}
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
-                        @empty
-                            <div class="bg-white/60 backdrop-blur-md p-8 md:p-12 rounded-3xl shadow-xl border border-white/20 prose prose-lg max-w-none text-gray-700 leading-relaxed font-sans"
-                                data-aos="zoom-in" data-aos-duration="1200">
-                                {!! $setting->love_story !!}
-                            </div>
-                        @endforelse
-                    </div>
-                </div>
-            </div>
-        </section>
-        @endif
+        
         @if($events->count() > 0)
         <section id="events" class="relative py-24 px-4 bg-transparent overflow-hidden">
             <div class="max-w-6xl mx-auto w-full relative z-15">
@@ -1195,6 +1118,9 @@
                     <span class="text-primary-custom text-sm tracking-[0.3em] uppercase mb-3 block font-semibold">Acara Pernikahan</span>
                     <h2 class="font-great text-4xl md:text-5xl lg:text-6xl text-gray-800 mb-4">Rangkaian Acara</h2>
                     <div class="w-20 h-1 bg-primary-custom mx-auto"></div>
+                    <p class="text-gray-600 text-sm md:text-base max-w-2xl mx-auto mt-6 leading-relaxed">
+                        merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan menjadi bagian dari suka cita di hari pernikahan kami yang akan diselenggarakan pada:
+                    </p>
                 </div>
                 
                 <div class="grid md:grid-cols-{{ min($events->count(), 2) }} gap-8 px-4 max-w-5xl mx-auto">
@@ -1349,6 +1275,81 @@
         </section>
         @endif
 
+        @if($setting->love_story && $setting->love_story != "<p><br></p>")
+        <section id="story" class="relative py-24 px-4 bg-transparent overflow-hidden">
+            <div class="max-w-4xl mx-auto relative z-15 px-4">
+                <div class="text-center mb-16" data-aos="fade-up">
+                    <span class="text-primary-custom text-sm tracking-[0.3em] uppercase mb-3 block font-semibold">Love Story</span>
+                    <h2 class="font-great text-4xl md:text-5xl lg:text-6xl text-gray-800 mb-4">Cerita Cinta Kami</h2>
+                    <div class="w-20 h-1 bg-primary-custom mx-auto"></div>
+                </div>
+
+                @php
+                    $storyBlocks = [];
+                    if ($setting->love_story) {
+                        preg_match_all('/<p><strong>(\d{4})<\/strong><\/p><p>(.*?)<\/p>/s', $setting->love_story, $matches, PREG_SET_ORDER);
+                        foreach ($matches as $match) {
+                            $storyBlocks[] = [
+                                'year' => $match[1],
+                                'content' => $match[2],
+                            ];
+                        }
+                    }
+                @endphp
+
+                <div class="relative">
+                    <div class="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-primary-custom/40 to-transparent -translate-x-1/2"></div>
+
+                    <div class="space-y-8 md:space-y-12">
+                        @forelse($storyBlocks as $index => $block)
+                            <div class="relative md:grid md:grid-cols-2 md:gap-12 items-center"
+                                data-aos="{{ $index % 2 === 0 ? 'fade-right' : 'fade-left' }}"
+                                data-aos-delay="{{ $index * 150 }}"
+                                data-aos-duration="1000">
+                                <div class="hidden md:flex absolute left-1/2 -translate-x-1/2 z-10">
+                                    <div class="w-4 h-4 rounded-full bg-gradient-custom ring-4 ring-white shadow-lg"></div>
+                                </div>
+
+                                @if($index % 2 === 0)
+                                    <div class="bg-white/80 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-xl border border-white/20 hover:shadow-2xl hover:-translate-y-1 transition-all duration-500">
+                                        <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-gradient-custom text-white text-sm font-semibold rounded-full mb-4">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                            </svg>
+                                            <span>{{ $block['year'] }}</span>
+                                        </div>
+                                        <div class="text-gray-700 leading-relaxed text-sm md:text-base">
+                                            {!! $block['content'] !!}
+                                        </div>
+                                    </div>
+                                    <div class="hidden md:block"></div>
+                                @else
+                                    <div class="hidden md:block"></div>
+                                    <div class="bg-white/80 backdrop-blur-md p-6 md:p-8 rounded-3xl shadow-xl border border-white/20 hover:shadow-2xl hover:-translate-y-1 transition-all duration-500">
+                                        <div class="inline-flex items-center gap-2 px-4 py-1.5 bg-gradient-custom text-white text-sm font-semibold rounded-full mb-4">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                            </svg>
+                                            <span>{{ $block['year'] }}</span>
+                                        </div>
+                                        <div class="text-gray-700 leading-relaxed text-sm md:text-base">
+                                            {!! $block['content'] !!}
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+                        @empty
+                            <div class="bg-white/60 backdrop-blur-md p-8 md:p-12 rounded-3xl shadow-xl border border-white/20 prose prose-lg max-w-none text-gray-700 leading-relaxed font-sans"
+                                data-aos="zoom-in" data-aos-duration="1200">
+                                {!! $setting->love_story !!}
+                            </div>
+                        @endforelse
+                    </div>
+                </div>
+            </div>
+        </section>
+        @endif
+
         @if($galleries && count($galleries) > 0)
         <section id="gallery" class="relative py-24 px-4 bg-transparent overflow-hidden">
             <div class="max-w-6xl mx-auto w-full relative z-15">
@@ -1372,10 +1373,12 @@
                                 default => 'col-span-1 row-span-1',
                             };
                         @endphp
-                        <div class="group relative overflow-hidden rounded-3xl {{ $spanClasses }} shadow-lg"
+                        <div class="group relative overflow-hidden rounded-3xl {{ $spanClasses }} shadow-lg cursor-pointer gallery-item"
                             data-aos="zoom-in"
                             data-aos-delay="{{ ($index % 8) * 100 }}"
-                            data-aos-duration="800">
+                            data-aos-duration="800"
+                            data-image="{{ $gallery->image_url }}"
+                            data-index="{{ $index }}">
                             <img src="{{ $gallery->image_url }}" alt="Gallery Momen" loading="lazy"
                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -1389,6 +1392,250 @@
                 </div>
             </div>
         </section>
+
+        <!-- Gallery Lightbox Modal -->
+        <div id="galleryModal" class="fixed inset-0 z-[999] hidden items-center justify-center bg-black/20 backdrop-blur-md opacity-0 transition-opacity duration-300">
+            <!-- Close Button -->
+            <button id="galleryModalClose" class="absolute top-5 right-5 z-20 w-11 h-11 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white transition-all duration-300 hover:scale-110">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+
+            <!-- Prev Button -->
+            <button id="galleryModalPrev" class="absolute left-3 md:left-6 z-20 w-11 h-11 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white transition-all duration-300 hover:scale-110">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                </svg>
+            </button>
+
+            <!-- Next Button -->
+            <button id="galleryModalNext" class="absolute right-3 md:right-6 z-20 w-11 h-11 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white transition-all duration-300 hover:scale-110">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+                </svg>
+            </button>
+
+            <!-- Image Stage -->
+            <div id="galleryStage" class="relative w-full h-full flex items-center justify-center overflow-hidden touch-none select-none">
+                <img id="galleryModalImage"
+                     src=""
+                     alt="Gallery Preview"
+                     class="max-w-[92vw] max-h-[88vh] object-contain rounded-2xl shadow-2xl transition-transform duration-300 ease-out will-change-transform"
+                     style="transform: translate(0px, 0px) scale(1); cursor: grab;"
+                     draggable="false">
+            </div>
+
+            <!-- Counter & Hint -->
+            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-1 pointer-events-none">
+                <span id="galleryModalCounter" class="text-white/80 text-xs tracking-widest font-medium">1 / 1</span>
+                <span class="text-white/40 text-[10px] hidden md:block">Scroll untuk zoom · Drag untuk geser</span>
+            </div>
+        </div>
+
+        <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const modal = document.getElementById('galleryModal');
+            const stage = document.getElementById('galleryStage');
+            const img = document.getElementById('galleryModalImage');
+            const closeBtn = document.getElementById('galleryModalClose');
+            const prevBtn = document.getElementById('galleryModalPrev');
+            const nextBtn = document.getElementById('galleryModalNext');
+            const counter = document.getElementById('galleryModalCounter');
+            const items = Array.from(document.querySelectorAll('.gallery-item'));
+
+            if (!items.length) return;
+
+            const images = items.map(el => el.dataset.image);
+            let currentIndex = 0;
+
+            // Zoom & pan state
+            let scale = 1;
+            let translateX = 0;
+            let translateY = 0;
+            let isDragging = false;
+            let startX = 0;
+            let startY = 0;
+            let startTranslateX = 0;
+            let startTranslateY = 0;
+
+            const MIN_SCALE = 1;
+            const MAX_SCALE = 4;
+
+            function applyTransform() {
+                img.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+                img.style.cursor = scale > 1 ? (isDragging ? 'grabbing' : 'grab') : 'default';
+            }
+
+            function resetTransform() {
+                scale = 1;
+                translateX = 0;
+                translateY = 0;
+                applyTransform();
+            }
+
+            function openModal(index) {
+                currentIndex = index;
+                img.src = images[currentIndex];
+                counter.textContent = `${currentIndex + 1} / ${images.length}`;
+                resetTransform();
+
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                // trigger opacity transition
+                requestAnimationFrame(() => {
+                    modal.classList.remove('opacity-0');
+                    modal.classList.add('opacity-100');
+                });
+                document.body.style.overflow = 'hidden';
+            }
+
+            function closeModal() {
+                modal.classList.remove('opacity-100');
+                modal.classList.add('opacity-0');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                    img.src = '';
+                    resetTransform();
+                }, 300);
+                document.body.style.overflow = '';
+            }
+
+            function showImage(index) {
+                currentIndex = (index + images.length) % images.length;
+                img.src = images[currentIndex];
+                counter.textContent = `${currentIndex + 1} / ${images.length}`;
+                resetTransform();
+            }
+
+            // Click on gallery item
+            items.forEach((item, index) => {
+                item.addEventListener('click', () => openModal(index));
+            });
+
+            // Close
+            closeBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal || e.target === stage) closeModal();
+            });
+
+            // Prev / Next
+            prevBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                showImage(currentIndex - 1);
+            });
+            nextBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                showImage(currentIndex + 1);
+            });
+
+            // Keyboard
+            document.addEventListener('keydown', (e) => {
+                if (modal.classList.contains('hidden')) return;
+                if (e.key === 'Escape') closeModal();
+                if (e.key === 'ArrowLeft') showImage(currentIndex - 1);
+                if (e.key === 'ArrowRight') showImage(currentIndex + 1);
+            });
+
+            // Wheel zoom
+            stage.addEventListener('wheel', (e) => {
+                if (modal.classList.contains('hidden')) return;
+                e.preventDefault();
+                const delta = e.deltaY > 0 ? -0.15 : 0.15;
+                const newScale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, scale + delta));
+                if (newScale === MIN_SCALE) {
+                    translateX = 0;
+                    translateY = 0;
+                }
+                scale = newScale;
+                applyTransform();
+            }, { passive: false });
+
+            // Drag pan (mouse)
+            stage.addEventListener('mousedown', (e) => {
+                if (scale <= 1) return;
+                e.preventDefault();
+                isDragging = true;
+                startX = e.clientX;
+                startY = e.clientY;
+                startTranslateX = translateX;
+                startTranslateY = translateY;
+                applyTransform();
+            });
+
+            window.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                translateX = startTranslateX + (e.clientX - startX);
+                translateY = startTranslateY + (e.clientY - startY);
+                applyTransform();
+            });
+
+            window.addEventListener('mouseup', () => {
+                if (isDragging) {
+                    isDragging = false;
+                    applyTransform();
+                }
+            });
+
+            // Touch: pinch zoom + pan
+            let touchStartDistance = 0;
+            let touchStartScale = 1;
+            let touchStartX = 0;
+            let touchStartY = 0;
+            let touchStartTranslateX = 0;
+            let touchStartTranslateY = 0;
+            let isTouching = false;
+
+            function getDistance(touches) {
+                const dx = touches[0].clientX - touches[1].clientX;
+                const dy = touches[0].clientY - touches[1].clientY;
+                return Math.hypot(dx, dy);
+            }
+
+            stage.addEventListener('touchstart', (e) => {
+                if (modal.classList.contains('hidden')) return;
+                isTouching = true;
+                if (e.touches.length === 2) {
+                    touchStartDistance = getDistance(e.touches);
+                    touchStartScale = scale;
+                } else if (e.touches.length === 1 && scale > 1) {
+                    touchStartX = e.touches[0].clientX;
+                    touchStartY = e.touches[0].clientY;
+                    touchStartTranslateX = translateX;
+                    touchStartTranslateY = translateY;
+                }
+            }, { passive: true });
+
+            stage.addEventListener('touchmove', (e) => {
+                if (!isTouching) return;
+                if (e.touches.length === 2) {
+                    e.preventDefault();
+                    const distance = getDistance(e.touches);
+                    if (touchStartDistance > 0) {
+                        const newScale = Math.min(MAX_SCALE, Math.max(MIN_SCALE, touchStartScale * (distance / touchStartDistance)));
+                        if (newScale === MIN_SCALE) {
+                            translateX = 0;
+                            translateY = 0;
+                        }
+                        scale = newScale;
+                        applyTransform();
+                    }
+                } else if (e.touches.length === 1 && scale > 1) {
+                    e.preventDefault();
+                    translateX = touchStartTranslateX + (e.touches[0].clientX - touchStartX);
+                    translateY = touchStartTranslateY + (e.touches[0].clientY - touchStartY);
+                    applyTransform();
+                }
+            }, { passive: false });
+
+            stage.addEventListener('touchend', (e) => {
+                if (e.touches.length === 0) {
+                    isTouching = false;
+                }
+            }, { passive: true });
+        });
+        </script>
         @endif
 
         @if($gifts && count($gifts) > 0)
@@ -1572,7 +1819,6 @@
     </div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <script>
@@ -2076,31 +2322,6 @@
                     });
                 });
             };
-
-            @if($galleries && count($galleries) > 0)
-            new Swiper(".mySwiper", {
-                effect: "coverflow",
-                grabCursor: true,
-                centeredSlides: true,
-                slidesPerView: "auto",
-                coverflowEffect: {
-                    rotate: 35,
-                    stretch: 5,
-                    depth: 100,
-                    modifier: 1.2,
-                    slideShadows: true,
-                },
-                pagination: {
-                    el: ".swiper-pagination",
-                    clickable: true,
-                },
-                navigation: {
-                    nextEl: ".swiper-button-next",
-                    prevEl: ".swiper-button-prev",
-                },
-                loop: true,
-            });
-            @endif
 
             const sections = $('section[id]');
             const navDots = $('.nav-dot');
