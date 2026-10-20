@@ -1119,7 +1119,7 @@
                     <h2 class="font-great text-4xl md:text-5xl lg:text-6xl text-gray-800 mb-4">Rangkaian Acara</h2>
                     <div class="w-20 h-1 bg-primary-custom mx-auto"></div>
                     <p class="text-gray-600 text-sm md:text-base max-w-2xl mx-auto mt-6 leading-relaxed">
-                        merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan menjadi bagian dari suka cita di hari pernikahan kami yang akan diselenggarakan pada:
+                        Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Bapak/Ibu/Saudara/i berkenan hadir dan menjadi bagian dari suka cita di hari pernikahan kami yang akan diselenggarakan pada:
                     </p>
                 </div>
                 
