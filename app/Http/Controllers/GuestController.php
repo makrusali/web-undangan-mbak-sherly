@@ -73,13 +73,13 @@ class GuestController extends Controller
                     $eventDetails .= "⏰ *Waktu:* {$startTime} - {$endTime} WIB\n";
                     $eventDetails .= "📍 *Lokasi:* {$event->location_name}\n";
 
-                    if ($event->address) {
-                        $eventDetails .= "🏠 *Alamat:* {$event->address}\n";
-                    }
+                    // if ($event->address) {
+                    //     $eventDetails .= "🏠 *Alamat:* {$event->address}\n";
+                    // }
 
-                    if ($event->gmaps_link) {
-                        $eventDetails .= "🗺️ *Google Maps:* {$event->gmaps_link}\n";
-                    }
+                    // if ($event->gmaps_link) {
+                    //     $eventDetails .= "🗺️ *Google Maps:* {$event->gmaps_link}\n";
+                    // }
                 }
 
                 // Replace {event_details} with formatted events
@@ -93,7 +93,7 @@ class GuestController extends Controller
                     if (strpos($message, '{{max_guest}}') !== false) {
                         $message = str_replace('{{max_guest}}', $maxGuest, $message);
                     } else {
-                        $message .= $maxGuestText;
+                        // $message .= $maxGuestText;
                     }
                 } else {
                     $message = str_replace('{{max_guest}}', '', $message);
